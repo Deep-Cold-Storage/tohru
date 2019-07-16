@@ -1,30 +1,66 @@
-import os
+#!/usr/bin/env python
 import redis
-import datetime
 import requests
 
+import config
+import logging
+
+"""Initialize logger."""
+log = logging.getLogger()
+
+log.setLevel(logging.INFO)
+log.addHandler(logging.StreamHandler())
 
 
 class Crawler():
     def __init__(self, root, prefix="", postfix=""):
+        """Simple Web Crawler.
+
+        Attributes:
+            root (str): URL to with root directory.
+            prefix (str): Prefix of file.
+            postfix (str): Postfix or extension of file.
+
+            requests (int): Returns number off all requests made.
+        """
         self.root = root
         self.prefix = prefix
         self.postfix = postfix
 
         self.requests = 0
 
+
     def _check_url(self, url):
+        """Checks for file on remote server."""
         self.requests += 1
+        log.debug("Crawler: Checking {} !".format(url))
 
         if requests.head(url).status_code == 200:
             return True
         else:
             return False
 
+
     def search(self, year, month, timetable=[[0, 24]]):
+        """Gets url to file on remote server.
+
+        Loops throught all posible datetime combinations in filename.
+        Needs year and month, generates time itself.
+
+        Args:
+            year (int): Year in filename.
+            month (int): Month in filename.
+            timetable (list, optional): List of lists with best hour ranges to search.
+
+        Returns:
+            URL when found, None when not.
+        """
         main_url = self.root + self.prefix + str(year).zfill(2) + str(month).zfill(2)
+        log.debug("Crawler: {}".format(main_url))
 
         for ranges in timetable:
+            log.info("Crawler: Checking for range {} - {}.".format(ranges[0], ranges[1]))
+
             for timestamps in [(days, hours, minutes)
                                 for days in range(31, 1, -1)
                                 for hours in range(ranges[0], ranges[1])
@@ -38,34 +74,36 @@ class Crawler():
                 if self._check_url(url):
                     return url
 
-        raise Exception("Couldn't find file on remote server!")
+        return None
 
-
-def get_config(config={}):
-    config["ROOT_URL"] = os.environ["ROOT_URL"]
-
-    config["REDIS_HOSTNAME"] = os.environ.get("REDIS_HOSTNAME") or "redis"
-    config["REDIS_KEY"] = os.environ.get("REDIS_KEY") or "url"
-
-    config["YEAR"] = os.environ.get("YEAR") or datetime.datetime.today().year
-    config["MONTH"] = os.environ.get("MONTH") or datetime.datetime.today().month
-
-    config["TIMETABLE"] = [[6, 17], [17, 25], [0, 6]]
-
-    return config
 
 def main():
-    config = get_config()
+     """Searches for and sets found URL in database."""
+    conf = config.Config()
 
-    crawler = Crawler(config["ROOT_URL"], postfix=".xlsx")
+    log.info("Initialized crawling job for {} month.".format(conf.month))
 
-    try:
-        result = crawler.search(config["YEAR"], config["MONTH"], config["TIMETABLE"])
+    crawler = Crawler(conf.root_url, postfix=".xlsx")
+    log.warning("Starting! Crawling in {}...".format(crawler.root))
 
-        db = redis.Redis(host=config["REDIS_HOSTNAME"], port=6379, decode_responses=True)
-        db.set(config["REDIS_KEY"], result)
-    except:
-        pass
+    results = crawler.search(conf.year, conf.month, conf.timetable)
+    if results is None:
+        log.critical("Crawler didn't found anything! Exiting...")
+
+    else:
+        log.warning("Found file: {} ! After {} requests.".format(results, crawler.requests))
+
+        try:
+            log.info("Connecting to Redis database...")
+
+            db = redis.Redis(host=conf.redis_hostname, port=6379, decode_responses=True)
+            db.set("url:{}".format(conf.month), results)
+
+            log.warning("Success! Key url:{} set to {} ! Exiting...".format(conf.month, results))
+
+        except:
+            log.critical("Error while setting Redis key!")
+
 
 
 if __name__ == "__main__":
