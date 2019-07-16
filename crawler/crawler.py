@@ -90,6 +90,7 @@ def main():
 
     if results is None:
         log.critical("Crawler didn't found anything! Exiting...")
+        exit(1)
 
     else:
         log.warning("Found file: {} ! After {} requests.".format(results, crawler.requests))
@@ -104,6 +105,7 @@ def main():
 
         except:
             log.critical("Error while setting Redis key!")
+            exit(1)
 
 
 
