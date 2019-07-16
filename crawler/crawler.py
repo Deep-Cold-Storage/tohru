@@ -62,7 +62,7 @@ class Crawler():
             log.info("Crawler: Checking for range {} - {}.".format(ranges[0], ranges[1]))
 
             for timestamps in [(days, hours, minutes)
-                                for days in range(31, 1, -1)
+                                for days in range(31, 0, -1)
                                 for hours in range(ranges[0], ranges[1])
                                 for minutes in range(0, 60)]:
 
@@ -78,7 +78,7 @@ class Crawler():
 
 
 def main():
-     """Searches for and sets found URL in database."""
+    """Searches for and sets found URL in database."""
     conf = config.Config()
 
     log.info("Initialized crawling job for {} month.".format(conf.month))
@@ -87,6 +87,7 @@ def main():
     log.warning("Starting! Crawling in {}...".format(crawler.root))
 
     results = crawler.search(conf.year, conf.month, conf.timetable)
+
     if results is None:
         log.critical("Crawler didn't found anything! Exiting...")
 
