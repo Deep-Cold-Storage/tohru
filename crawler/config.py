@@ -14,5 +14,3 @@ class Config:
 
         self.year = os.environ.get("YEAR") or datetime.today().year
         self.month = os.environ.get("MONTH") or datetime.today().month
-
-        self.log_level = os.environ.get("LOG_LEVEL") or "INFO"
