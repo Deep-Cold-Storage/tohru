@@ -11,3 +11,8 @@ class Config:
 
         self.filename = os.environ.get("FILENAME") or "timetable.xlsx"
         self.month = os.environ.get("MONTH") or datetime.today().month
+
+        if os.environ.get("EXPIRE") == "False":
+            self.expire = False
+        else:
+            self.expire = True

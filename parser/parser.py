@@ -152,7 +152,7 @@ def main():
 
     log.info("Storing data in Redis...")
     for route in routes:
-        route.store(database)
+        route.store(database, conf.expire)
 
     log.warning("Success! Exiting!")
 

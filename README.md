@@ -24,6 +24,7 @@ rangerdigital/tohru-parser:latest
 - **REDIS_HOSTNAME** - _(Optional)_ Redis instance hostname/address. Default: **redis**
 - **FILENAME** - _(Optional)_ Name of file used for parsing. Default: **timetable.xlsx**
 - **MONTH** - _(Optional)_ Month used for URL retrieval from Redis.
+- **EXPIRE** - _(Optional)_ Set expiration date on key. Default: **True**
 
 ## License
 [GPL-3.0](https://choosealicense.com/licenses/gpl-3.0/)
