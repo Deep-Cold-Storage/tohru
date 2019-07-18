@@ -1,0 +1,38 @@
+kind: pipeline
+name: main
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+
+- name: build (staging)
+  image: plugins/docker
+  settings:
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    repo: rangerdigital/tohru-parser
+    tags: staging
+  when:
+    event:
+      include:
+        - push
+      exclude:
+        - promote
+
+
+- name: build (production)
+  image: plugins/docker
+  settings:
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    repo: rangerdigital/tohru-parser
+    tags: latest
+  when:
+    event:
+      - promote
