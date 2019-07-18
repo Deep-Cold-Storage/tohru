@@ -11,5 +11,19 @@ The whole architecture is made from microservices and batch jobs running in **Do
 
 **Tohru - Parser** gets the **URL** to latest file from Redis and downloads It. Then parses columns containing departure times of buses. Saves It in Redis database with expiration dates.
 
+## Usage
+
+>This project is hardcoded to my particular problem, you probably won't find it useful.
+
+**Docker Container** available via DockerHub:
+```
+rangerdigital/tohru-parser:latest
+```
+
+**Environment Variables:**
+- **REDIS_HOSTNAME** - _(Optional)_ Redis instance hostname/address. Default: **redis**
+- **FILENAME** - _(Optional)_ Name of file used for parsing. Default: **timetable.xlsx**
+- **MONTH** - _(Optional)_ Month used for URL retrieval from Redis.
+
 ## License
 [GPL-3.0](https://choosealicense.com/licenses/gpl-3.0/)
