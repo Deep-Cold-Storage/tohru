@@ -18,6 +18,15 @@ log.addHandler(logging.StreamHandler())
 
 class Route():
     def __init__(self, origin, destination, duration, timetable):
+        """Route between two bus stops. One way.
+
+        Attributes:
+            origin (str): Code of route origin.
+            destination (str): Code of route destination.
+            duration (int): Duration of a journey in minutes.
+
+            timetable (dict): Dictionary from DocumentParser containing timetable.
+        """
         self.origin = origin
         self.duration = duration
         self.destination = destination
@@ -25,27 +34,41 @@ class Route():
         self.timetable = timetable
 
     def store(self, database, expire=True):
+        """Saves route data (days, duration) in Redis.
+        Using a custom database schema.
+
+        Args:
+            database (obj): Redis database object.
+            expire (bool): Sets expiration on the key one day after.
+        """
         root_key = ("origin:{}:destination:{}".format(self.origin, self.destination))
 
         database.set(root_key + ":duration", self.duration)
         log.debug("Set duration to: {}".format(self.duration))
 
         for days in self.timetable:
+            log.info("Added {} day with {} departures.".format(days, len(days)))
+
             key = root_key + ":date:{}".format(days)
             value = json.dumps(self.timetable[days])
             expiration = datetime.strptime(days, "%d.%m.%Y") + timedelta(days=1)
 
             database.set(key, value)
-            log.info("Stored timetable for route {} ---> {},".format(self.origin, self.destination,))
-            log.info("Added {} days.".format(len(self.timetable)))
 
             if expire:
-                log.debug("Set expiration on {}.".format(expiration))
                 database.expireat(key, expiration)
 
 
 class DocumentParser():
     def __init__(self, path, sheet=0, start_row=3):
+        """Exel document containing the whole timetable.
+
+        Attributes:
+            path (str): Path to .xlsx file on local filesystem.
+
+            sheet (int, optional): Number of document sheet.
+            start_row (int, optional): Start row of tables.
+        """
         self.path = path
 
         self.workbook = openpyxl.load_workbook(self.path)
@@ -54,6 +77,14 @@ class DocumentParser():
         self.start_row = start_row
 
     def column(self, column):
+        """Parses column for days with departures.
+
+        Args:
+            column (int): Number of wanted column.
+
+        Returns:
+            A dictionary containing lists with times of departure from selected column.
+        """
         departures = {}
 
         for row in range(self.start_row, self.sheet.max_row + 1):
@@ -73,6 +104,7 @@ class DocumentParser():
 
 
 def download_file(url, filename):
+    """Downloads and saves file from URL."""
     with open(filename, "wb") as file:
         file.write(requests.get(url).content)
 
@@ -88,7 +120,7 @@ def main():
         url = database.get("url:{}".format(conf.month))
     except:
         log.critical("URL for {} month not found! Exiting...".format(conf.month))
-        exit(1)
+        return
 
     download_file(url, conf.filename)
     log.warning("Success! File downloaded and saved.")
@@ -116,7 +148,7 @@ def main():
     routes.append(Route("tesc", "ctir", 20, parser.column(5)))
 
     routes.append(Route("tycz", "ctir", 10, parser.column(6)))
-    # I am ashamed.
+    # I am ashamed of myself.
 
     log.info("Storing data in Redis...")
     for route in routes:
