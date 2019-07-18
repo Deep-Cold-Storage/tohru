@@ -47,7 +47,7 @@ class Route():
         log.debug("Set duration to: {}".format(self.duration))
 
         for days in self.timetable:
-            log.info("Added {} day with {} departures.".format(days, len(days)))
+            log.debug("Added {} day with {} departures.".format(days, len(days)))
 
             key = root_key + ":date:{}".format(days)
             value = json.dumps(self.timetable[days])
@@ -152,7 +152,7 @@ def main():
 
     log.info("Storing data in Redis...")
     for route in routes:
-        route.store(database, False)
+        route.store(database)
 
     log.warning("Success! Exiting!")
 
