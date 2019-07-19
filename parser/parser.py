@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import yaml
 import redis
 import requests
 import openpyxl
@@ -14,6 +15,32 @@ log = logging.getLogger()
 
 log.setLevel(logging.INFO)
 log.addHandler(logging.StreamHandler())
+
+
+class Origin():
+    def __init__(self, content):
+        """Origin representing bus stop.
+
+        Attributes:
+            content (dict): Dictionary from YAML parser containing origin data.
+        """
+        self.code = content["code"]
+        self.name = content["name"]
+
+        self.longitude = content["longitude"]
+        self.latitude = content["latitude"]
+
+        self.connections = content["connections"]
+
+    def store(self, database):
+        """Saves origin data (code, name, position) in Redis.
+        Using a custom database schema.
+
+        Args:
+            database (obj): Redis database object.
+        """
+        database.set("origin:{}:name".format(self.code), self.name)
+        database.geoadd("origins:positions", self.longitude, self.latitude, self.code)
 
 
 class Route():
@@ -109,6 +136,12 @@ def download_file(url, filename):
         file.write(requests.get(url).content)
 
 
+def parse_yaml(filename):
+    """Opens and parser YAML config."""
+    with open(filename, "r", encoding="UTF-8") as file:
+        return yaml.safe_load(file)["origins"]
+
+
 def main():
     conf = config.Config()
     log.info("Initialized parsing job for {} month.".format(conf.month))
@@ -128,29 +161,24 @@ def main():
     parser = DocumentParser(conf.filename)
     log.info("Parsing timetable...")
 
+    yaml_content = parse_yaml(conf.yaml_path)
+
+    log.info("Creating origins...")
+    origins = []
+    for item in yaml_content:
+        origins.append(Origin(item))
+
+    log.info("Creating routes...")
     routes = []
+    for origin in origins:
+        for route in origin.connections:
+            routes.append(Route(origin.code, route["destination"], route["duration"], parser.column(route["column"])))
 
-    # Hard-coded routes between stations. Will be replaced by Admin UI.
-    routes.append(Route("ctir", "tycz", 10, parser.column(8)))
-    routes.append(Route("ctir", "tesc", 20, parser.column(8)))
-    routes.append(Route("tycz", "tesc", 10, parser.column(9)))
+    log.info("Storing origins data in Redis...")
+    for origin in origins:
+        origin.store(database)
 
-    routes.append(Route("ofka", "tycz", 30, parser.column(2)))
-    routes.append(Route("ofka", "ctir", 40, parser.column(2)))
-
-    routes.append(Route("ciep", "tycz", 20, parser.column(3)))
-    routes.append(Route("ciep", "ctir", 30, parser.column(3)))
-
-    routes.append(Route("pows", "tycz", 10, parser.column(4)))
-    routes.append(Route("pows", "ctir", 20, parser.column(4)))
-
-    routes.append(Route("tesc", "tycz", 10, parser.column(5)))
-    routes.append(Route("tesc", "ctir", 20, parser.column(5)))
-
-    routes.append(Route("tycz", "ctir", 10, parser.column(6)))
-    # I am ashamed of myself.
-
-    log.info("Storing data in Redis...")
+    log.info("Storing routes data in Redis...")
     for route in routes:
         route.store(database, conf.expire)
 

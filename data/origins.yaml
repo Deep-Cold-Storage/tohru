@@ -1,0 +1,74 @@
+origins:
+# Example specification containing origins data.
+
+  - code: ctir
+    name: Kielnarowa, WSiZ
+    longitude: 49.950368
+    latitude: 22.059458
+    connections:
+      - destination: tycz
+        duration: 10
+        column: 8
+      - destination: tesc
+        duration: 20
+        column: 8
+
+  - code: tesc
+    name: Rzeszów, Tesco
+    longitude: 50.018443
+    latitude: 22.013968
+    connections:
+      - destination: ctir
+        duration: 20
+        column: 5
+      - destination: tycz
+        duration: 10
+        column: 5
+
+  - code: tycz
+    name: Tyczyn, Park
+    longitude: 49.964446
+    latitude: 22.030120
+    connections:
+      - destination: tesc
+        duration: 10
+        column: 9
+      - destination: ctir
+        duration: 10
+        column: 6
+
+  - code: ciep
+    name: Rzeszów, Cieplińskiego
+    longitude: 50.038782
+    latitude: 21.997725
+    connections:
+      - destination: ctir
+        duration: 30
+        column: 3
+      - destination: tycz
+        duration: 20
+        column: 3
+
+  - code: ofka
+    name: Rzeszów, Ofiar Kat.
+    longitude: 50.053133
+    latitude: 21.978452
+    connections:
+      - destination: ctir
+        duration: 40
+        column: 2
+      - destination: tycz
+        duration: 30
+        column: 2
+
+  - code: pows
+    name: Rzeszów, Powst. W-wy
+    longitude: 50.017674
+    latitude: 22.015358
+    connections:
+      - destination: ctir
+        duration: 20
+        column: 4
+      - destination: tycz
+        duration: 10
+        column: 4
