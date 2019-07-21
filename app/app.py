@@ -83,12 +83,14 @@ def sort_departures(departures, now):
 
 def verify_activity(origin_id, now):
     for destination_id in retrieve_destinations(origin_id):
-        try:
-            departures_now = json.loads(database.get(
-                                "origin:{}:destination:{}:date:{}".format(
-                                    origin_id, destination_id, now.strftime("%d.%m.%Y"))))
-        except TypeError:
+        date = now.strftime("%d.%m.%Y")
+
+        departures_now = database.get("origin:{}:destination:{}:date:{}".format(origin_id, destination_id, date))
+
+        if departures_now is None:
             continue
+        else:
+            departures_now = json.loads(departures_now)
 
         past_departures, future_departures = sort_departures(departures_now, now)
 
@@ -173,11 +175,13 @@ def schedules():
     date = now.strftime("%d.%m.%Y")
 
     departures = database.get("origin:{}:destination:{}:date:{}".format(origin, destination, date))
-
     if departures is None:
         return json_response("Couldn't find any departures for {}!".format(date), 404)
     else:
         departures = json.loads(departures)
+
+    duration = database.get("origin:{}:destination:{}:duration".format(origin, destination))
+    arrivals = [calculate_arrival(departure, duration, now) for departure in departures]
 
     response = {"date": date,
                 "offset": offset,
@@ -189,9 +193,9 @@ def schedules():
         past_departures, future_departures = sort_departures(departures, now)
 
         response["departures"] = {"past": past_departures, "future": future_departures}
-
     else:
         response["departures"] = departures
+        response["arrivals"] = arrivals
 
     return json_response(response)
 
@@ -223,7 +227,6 @@ def live():
         return json_response("Couldn't find any more departures for {} at this time!".format(date), 404)
 
     duration = database.get("origin:{}:destination:{}:duration".format(origin, destination))
-
 
     response["departure"] = future_departures[0]
     response["until"] = calculate_until(future_departures[0], now)
