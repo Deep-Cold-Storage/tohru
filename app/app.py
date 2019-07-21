@@ -39,7 +39,7 @@ def json_response(payload, status=200):
 
 
 def get_now():
-    now = datetime.today().replace(month=6, day=29)
+    now = datetime.today().replace(month=6, day=29, hour=7)
     return now
 
 
@@ -115,7 +115,7 @@ def origin(origin_id):
     response = {}
 
     if origin_id in retrieve_origins():
-        response["origin_id"] = Origin(origin_id).json()
+        response[origin_id] = Origin(origin_id).json()
 
         return json_response(response)
     else:
@@ -181,7 +181,6 @@ def schedules():
         departures = json.loads(departures)
 
     duration = database.get("origin:{}:destination:{}:duration".format(origin, destination))
-    arrivals = [calculate_arrival(departure, duration, now) for departure in departures]
 
     response = {"date": date,
                 "offset": offset,
@@ -190,12 +189,21 @@ def schedules():
 
     sorted = request.args.get("sorted")
     if sorted is not None and sorted.upper() == "TRUE":
+        response["schedule"] = {"past": [], "future": []}
         past_departures, future_departures = sort_departures(departures, now)
 
-        response["departures"] = {"past": past_departures, "future": future_departures}
+        for past_departure in past_departures:
+            arrival = calculate_arrival(past_departure, duration, now)
+            response["schedule"]["past"].append([past_departure, arrival])
+
+        for future_departure in future_departures:
+            arrival = calculate_arrival(future_departure, duration, now)
+            response["schedule"]["future"].append([future_departure, arrival])
     else:
-        response["departures"] = departures
-        response["arrivals"] = arrivals
+        response["schedule"] = []
+        for departure in departures:
+            arrival = calculate_arrival(departure, duration, now)
+            response["schedule"].append([departure, arrival])
 
     return json_response(response)
 
@@ -228,9 +236,10 @@ def live():
 
     duration = database.get("origin:{}:destination:{}:duration".format(origin, destination))
 
-    response["departure"] = future_departures[0]
     response["until"] = calculate_until(future_departures[0], now)
-    response["arrival"] = calculate_arrival(future_departures[0], duration, now)
+
+    response["schedule"] = []
+    response["schedule"].append([future_departures[0], calculate_arrival(future_departures[0], duration, now)])
 
     return json_response(response)
 
