@@ -1,7 +1,9 @@
 import json
+import uuid
 import redis
 from datetime import datetime, timedelta
 from flask import Flask, Response, request
+from functools import wraps
 
 import config
 
@@ -27,7 +29,7 @@ class Origin():
         return json
 
 
-def json_response(payload, status=200):
+def json_response(payload, status=200, cookie=None):
     if status >= 200 and status < 300:
         envelope = {"status": "success",
                     "payload": payload}
@@ -35,7 +37,23 @@ def json_response(payload, status=200):
         envelope = {"status": "error",
                     "message": payload}
 
-    return Response(json.dumps(envelope, ensure_ascii=False), status=status, mimetype="application/json")
+    response = Response(json.dumps(envelope, ensure_ascii=False), status=status, mimetype="application/json")
+    if cookie is not None:
+        response.set_cookie("UUID", cookie, expires=datetime.now() + timedelta(days=30))
+    return response
+
+
+def uuid_cookie(request):
+    cookie = request.cookies.get("UUID")
+    if cookie is None:
+        cookie = str(uuid.uuid4())
+    else:
+        print(cookie)
+        database.pfadd("users:unique", cookie)
+
+    x = database.pfcount("users:unique")
+    print(x)
+    return cookie
 
 
 def get_now():
@@ -44,12 +62,12 @@ def get_now():
 
 
 def retrieve_origins():
-    origins_ids = [key.split(":")[1] for key in database.keys("origin:*:name")]
+    origins_ids = [key.split(":")[1] for key in database.scan_iter("origin:*:name")]
     return origins_ids
 
 
 def retrieve_destinations(origin_id):
-    destinations_ids = [key.split(":")[3] for key in database.keys("origin:{}:destination:*:duration".format(origin_id))]
+    destinations_ids = [key.split(":")[3] for key in  database.scan_iter("origin:{}:destination:*:duration".format(origin_id))]
     return destinations_ids
 
 
@@ -101,8 +119,11 @@ def verify_activity(origin_id, now):
 
 
 @app.route("/origins/")
+@set_cookie
 def origins():
     response = {}
+
+    # cookie = set_cookie(request)
 
     for origin_id in retrieve_origins():
         response[origin_id] = Origin(origin_id).json()
