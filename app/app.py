@@ -1,9 +1,8 @@
-import json
 import uuid
+import json
 import redis
 from datetime import datetime, timedelta
 from flask import Flask, Response, request
-from functools import wraps
 
 import config
 
@@ -29,7 +28,7 @@ class Origin():
         return json
 
 
-def json_response(payload, status=200, cookie=None):
+def json_response(payload, status=200, cookies={}):
     if status >= 200 and status < 300:
         envelope = {"status": "success",
                     "payload": payload}
@@ -38,21 +37,18 @@ def json_response(payload, status=200, cookie=None):
                     "message": payload}
 
     response = Response(json.dumps(envelope, ensure_ascii=False), status=status, mimetype="application/json")
-    if cookie is not None:
-        response.set_cookie("UUID", cookie, expires=datetime.now() + timedelta(days=30))
+    for key in cookies:
+        response.set_cookie(key, cookies[key], expires=datetime.now() + timedelta(days=30))
+
     return response
 
 
-def uuid_cookie(request):
-    cookie = request.cookies.get("UUID")
-    if cookie is None:
+def record_uuid(cookie):
+    if cookie is None or len(cookie) != 36:
         cookie = str(uuid.uuid4())
     else:
-        print(cookie)
         database.pfadd("users:unique", cookie)
 
-    x = database.pfcount("users:unique")
-    print(x)
     return cookie
 
 
@@ -119,11 +115,8 @@ def verify_activity(origin_id, now):
 
 
 @app.route("/origins/")
-@set_cookie
 def origins():
     response = {}
-
-    # cookie = set_cookie(request)
 
     for origin_id in retrieve_origins():
         response[origin_id] = Origin(origin_id).json()
@@ -195,6 +188,8 @@ def schedules():
     now = get_now() + timedelta(days=offset)
     date = now.strftime("%d.%m.%Y")
 
+    cookie = record_uuid(request.cookies.get("UUID"))
+
     departures = database.get("origin:{}:destination:{}:date:{}".format(origin, destination, date))
     if departures is None:
         return json_response("Couldn't find any departures for {}!".format(date), 404)
@@ -226,7 +221,7 @@ def schedules():
             arrival = calculate_arrival(departure, duration, now)
             response["schedule"].append([departure, arrival])
 
-    return json_response(response)
+    return json_response(response, cookies={"UUID": cookie})
 
 
 @app.route("/live/")
