@@ -53,7 +53,8 @@ def record_uuid(cookie):
 
 
 def get_now():
-    now = datetime.today().replace(month=6, day=29, hour=7)
+    # now = datetime.today().replace(month=6, day=29, hour=7)
+    now = datetime.today()
     return now
 
 
