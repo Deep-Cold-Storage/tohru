@@ -14,7 +14,7 @@ steps:
       from_secret: docker_username
     password:
       from_secret: docker_password
-    repo: rangerdigital/tohru-crawler
+    repo: rangerdigital/tohru-backend
     tags: staging
   when:
     event:
@@ -31,7 +31,7 @@ steps:
       from_secret: docker_username
     password:
       from_secret: docker_password
-    repo: rangerdigital/tohru-crawler
+    repo: rangerdigital/tohru-backend
     tags: latest
   when:
     event:
