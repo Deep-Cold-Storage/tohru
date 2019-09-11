@@ -53,8 +53,10 @@ def record_uuid(cookie):
 
 
 def get_now():
-    # now = datetime.today().replace(month=6, day=29, hour=7)
-    now = datetime.today()
+    if conf.month is None:
+        now = datetime.today()
+    else:
+        now = datetime.today().replace(month=int(conf.month))
     return now
 
 

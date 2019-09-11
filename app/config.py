@@ -8,3 +8,5 @@ class Config:
         Gets config from Docker container environment variables.
         """
         self.redis_hostname = os.environ.get("REDIS_HOSTNAME") or "redis"
+        
+        self.month = os.environ.get("MONTH")
