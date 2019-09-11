@@ -23,19 +23,6 @@ steps:
       exclude:
         - promote
 
-- name: update swarm (staging)
-  image: alpine
-  commands:
-    - apk add curl
-    - curl -k -X POST --resolve portainer.sylvanas.dream:443:10.0.0.1 https://portainer.sylvanas.dream/api/webhooks/22340c59-44cf-4323-ac88-8c6a7eda3ec8
-    - echo Done!
-  when:
-    event:
-      include:
-        - push
-      exclude:
-        - promote
-
 - name: build (production)
   image: plugins/docker
   settings:
