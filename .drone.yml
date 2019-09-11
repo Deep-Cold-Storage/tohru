@@ -23,6 +23,20 @@ steps:
       exclude:
         - promote
 
+- name: update swarm (staging)
+  image: alpine
+  environment:
+      WEBHOOK:
+        from_secret: stag_webhook
+  command:
+    - apk add curl
+    - curl -k --resolve portainer.sylvanas.dream:443:10.0.0.1 $${WEBHOOK}
+  when:
+    event:
+      include:
+        - push
+      exclude:
+        - promote
 
 - name: build (production)
   image: plugins/docker

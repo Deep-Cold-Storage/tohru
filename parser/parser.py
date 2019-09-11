@@ -183,6 +183,7 @@ def main():
         route.store(database, conf.expire)
 
     log.warning("Success! Exiting!")
+    exit(0)
 
 
 if __name__ == "__main__":
