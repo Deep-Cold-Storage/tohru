@@ -30,7 +30,7 @@ steps:
         from_secret: stag_webhook
   commands:
     - apk add curl
-    - curl -k --resolve portainer.sylvanas.dream:443:10.0.0.1 $${WEBHOOK}
+    - curl -k -X POST --resolve portainer.sylvanas.dream:443:10.0.0.1 $${WEBHOOK}
     - echo Done!
   when:
     event:
