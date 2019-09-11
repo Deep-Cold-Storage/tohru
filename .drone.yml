@@ -28,9 +28,10 @@ steps:
   environment:
       WEBHOOK:
         from_secret: stag_webhook
-  command:
+  commands:
     - apk add curl
     - curl -k --resolve portainer.sylvanas.dream:443:10.0.0.1 $${WEBHOOK}
+    - echo Done!
   when:
     event:
       include:
