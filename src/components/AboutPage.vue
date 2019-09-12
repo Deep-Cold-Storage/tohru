@@ -20,7 +20,4 @@ p {
   color: #f8f8f8;
 }
 
-.page {
-  background-color: #fc736a;
-}
 </style>

@@ -1,11 +1,32 @@
 <template>
   <div id="app">
     <div id="slider" v-bind:class="{ 'slider-snap': snapScroll }">
-      <AboutPage id="about-page"></AboutPage>
-      <StationPage id="station-page"></StationPage>
-      <SchedulePage id="schedule-page"></SchedulePage>
+      <AboutPage id="about-page"
+        v-observe-visibility="{
+          callback: visibilityChanged,
+          throttle: 0,
+          intersection: {threshold: 1, rootMargin: '20%'}
+
+        }">
+      </AboutPage>
+      <StationPage id="station-page"
+        v-observe-visibility="{
+          callback: visibilityChanged,
+          throttle: 0,
+          intersection: {threshold: 1, rootMargin: '20%'}
+
+        }">
+      ></StationPage>
+      <SchedulePage id="schedule-page"
+        v-observe-visibility="{
+          callback: visibilityChanged,
+          throttle: 0,
+          intersection: {threshold: 1, rootMargin: '20%'}
+
+        }">
+      ></SchedulePage>
     </div>
-    <TabBar v-on:toggleSnap="toggleSnapScroll"></TabBar>
+    <TabBar v-on:toggleSnap="toggleSnapScroll" v-bind:visiblePage="visiblePage"></TabBar>
   </div>
 </template>
 
@@ -19,7 +40,8 @@ export default {
   name: "app",
   data() {
     return {
-      snapScroll: true
+      snapScroll: true,
+      visiblePage: "station-page"
     };
   },
   components: {
@@ -32,6 +54,11 @@ export default {
   methods: {
     toggleSnapScroll: function(boolean) {
       this.snapScroll = boolean;
+    },
+    visibilityChanged (isVisible, entry) {
+      if (isVisible == true){
+        this.visiblePage = entry.target.id;
+      }
     }
   },
 

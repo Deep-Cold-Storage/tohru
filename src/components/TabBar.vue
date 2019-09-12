@@ -1,17 +1,31 @@
 <template>
-  <div class="main">
-    <button v-on:click.stop="scroll('#about-page')">About</button>
-    <button v-on:click.stop="scroll('#station-page')">Station</button>
-    <button v-on:click.stop="scroll('#schedule-page')">Schedule</button>
-  </div>
+  <nav class="tab-bar">
+    <div class="nav-button"  v-bind:class="{ 'nav-button-active': (visiblePage=='about-page') }">
+      <div class="nav-button-line"></div>
+      <button v-on:click.stop="scroll('#about-page')">About</button>
+    </div>
+
+    <div class="nav-button" v-bind:class="{ 'nav-button-active': (visiblePage=='station-page') }">
+      <div class="nav-button-line"></div>
+      <button v-on:click.stop="scroll('#station-page')">Station</button>
+    </div>
+
+    <div class="nav-button" v-bind:class="{ 'nav-button-active': (visiblePage=='schedule-page') }">
+      <div class="nav-button-line"></div>
+      <button v-on:click.stop="scroll('#schedule-page')">Schedule</button>
+    </div>
+  </nav>
 </template>
 
 <script>
 export default {
   name: "TabBar",
+  props: {
+    visiblePage: String
+  },
   data() {
     return {
-      isScrolling: false
+      isScrolling: false,
     };
   },
   methods: {
@@ -45,31 +59,65 @@ export default {
 </script>
 
 <style scoped>
-p {
-  text-align: center;
+/* Active Button */
+.nav-button-active div {
+  background-color: #22A460;
+}
+
+.nav-button-active button {
+  color: #22A460;
 }
 
 button {
-  width: 33.3%;
+  transition: color 0.4s ease;
+
+  width: 100%;
+  height: 60%;
+
   font-family: "Montserrat", sans-serif;
-  color: #f8f8f8;
+  color: #353535;
   font-weight: 500;
   font-size: 15px;
-  height: 100%;
-  border: none;
-  background-color: Transparent;
   text-align: center;
   text-decoration: none;
+
+  border: none;
   outline: none;
+  background-color: Transparent;
 }
 
-.main {
-  background-color: Transparent;
-  height: 50px;
-  width: 80vw;
+.nav-button {
+  width: 33.3%;
+  height: 100%;
+  display: inline-block;
+}
+
+.nav-button-line {
+    transition: background-color 0.4s ease;
+    background-color: #353535;
+    border-radius: 1000px;
+    width: 75%;
+    height: 5%;
+    margin: 0 auto;
+}
+
+.tab-bar {
   position: relative;
-  z-index: 1;
-  bottom: 10vh;
+  height: 50px;
+  width: 90vw;
+  bottom: 7vh;
   margin: 0 auto;
+}
+
+@media screen and (min-width: 700px) and (max-width: 1100px) {
+  .tab-bar{
+    width: 50vw;
+  }
+}
+
+@media screen and (min-width: 900px) and (orientation: landscape) {
+  .tab-bar {
+    display: none;
+  }
 }
 </style>
