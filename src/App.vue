@@ -1,32 +1,40 @@
 <template>
   <div id="app">
     <div id="slider" v-bind:class="{ 'slider-snap': snapScroll }">
-      <AboutPage id="about-page"
+      <AboutPage
+        id="about-page"
         v-observe-visibility="{
           callback: visibilityChanged,
           throttle: 0,
-          intersection: {threshold: 1, rootMargin: '20%'}
-
-        }">
+          intersection: { threshold: 1, rootMargin: '20%' }
+        }"
+      >
       </AboutPage>
-      <StationPage id="station-page"
+      <StationPage
+        id="station-page"
         v-observe-visibility="{
           callback: visibilityChanged,
           throttle: 0,
-          intersection: {threshold: 1, rootMargin: '20%'}
-
-        }">
-      ></StationPage>
-      <SchedulePage id="schedule-page"
+          intersection: { threshold: 1, rootMargin: '20%' }
+        }"
+      >
+        ></StationPage
+      >
+      <SchedulePage
+        id="schedule-page"
         v-observe-visibility="{
           callback: visibilityChanged,
           throttle: 0,
-          intersection: {threshold: 1, rootMargin: '20%'}
-
-        }">
-      ></SchedulePage>
+          intersection: { threshold: 1, rootMargin: '20%' }
+        }"
+      >
+        ></SchedulePage
+      >
     </div>
-    <TabBar v-on:toggleSnap="toggleSnapScroll" v-bind:visiblePage="visiblePage"></TabBar>
+    <TabBar
+      v-on:toggleSnap="toggleSnapScroll"
+      v-bind:visiblePage="visiblePage"
+    ></TabBar>
   </div>
 </template>
 
@@ -41,7 +49,7 @@ export default {
   data() {
     return {
       snapScroll: true,
-      visiblePage: "station-page"
+      visiblePage: "station-page",
     };
   },
   components: {
@@ -55,8 +63,8 @@ export default {
     toggleSnapScroll: function(boolean) {
       this.snapScroll = boolean;
     },
-    visibilityChanged (isVisible, entry) {
-      if (isVisible == true){
+    visibilityChanged(isVisible, entry) {
+      if (isVisible == true) {
         this.visiblePage = entry.target.id;
       }
     }
@@ -82,10 +90,20 @@ html {
   box-sizing: border-box;
 }
 
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
 body {
   margin: 0;
   overflow: hidden;
   background-color: #131313;
+  background-image: url("./assets/tohru-bg.svg");
+  background-repeat: no-repeat;
+  background-position: 100%;
+  background-size: 150%;
 }
 
 /* Global Text Style */
@@ -106,6 +124,7 @@ h2 {
   font-family: "Montserrat", sans-serif;
   color: #f8f8f8;
   font-size: 23px;
+  letter-spacing: 0.0525em;
 }
 
 /* Slider, Pages */
@@ -129,6 +148,11 @@ h2 {
 }
 
 @media screen and (min-width: 900px) and (orientation: landscape) {
+  body {
+    background-position: 40%;
+    background-size: 50%;
+  }
+
   #about-page,
   #station-page,
   #schedule-page {

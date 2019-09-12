@@ -1,23 +1,25 @@
 <template>
-  <div class="page">
-    <p>Station!</p>
-    <p>{{ data }}</p>
+  <div class="station-page">
+    <Route></Route>
+    <StationLive></StationLive>
   </div>
 </template>
 
 <script>
+import Route from "./Route.vue";
+import StationLive from "./StationLive.vue";
+
 export default {
   name: "StationPage",
-  props: {
-    data: String
-  }
+  components: {
+    Route,
+    StationLive
+  },
 };
 </script>
 
 <style scoped>
 p {
-  font-family: "Montserrat", sans-serif;
   text-align: center;
-  color: #f8f8f8;
 }
 </style>

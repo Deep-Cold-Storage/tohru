@@ -19,5 +19,4 @@ p {
   text-align: center;
   color: #f8f8f8;
 }
-
 </style>

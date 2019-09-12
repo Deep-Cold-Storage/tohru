@@ -1,16 +1,25 @@
 <template>
   <nav class="tab-bar">
-    <div class="nav-button"  v-bind:class="{ 'nav-button-active': (visiblePage=='about-page') }">
+    <div
+      class="nav-button"
+      v-bind:class="{ 'nav-button-active': visiblePage == 'about-page' }"
+    >
       <div class="nav-button-line"></div>
       <button v-on:click.stop="scroll('#about-page')">About</button>
     </div>
 
-    <div class="nav-button" v-bind:class="{ 'nav-button-active': (visiblePage=='station-page') }">
+    <div
+      class="nav-button"
+      v-bind:class="{ 'nav-button-active': visiblePage == 'station-page' }"
+    >
       <div class="nav-button-line"></div>
       <button v-on:click.stop="scroll('#station-page')">Station</button>
     </div>
 
-    <div class="nav-button" v-bind:class="{ 'nav-button-active': (visiblePage=='schedule-page') }">
+    <div
+      class="nav-button"
+      v-bind:class="{ 'nav-button-active': visiblePage == 'schedule-page' }"
+    >
       <div class="nav-button-line"></div>
       <button v-on:click.stop="scroll('#schedule-page')">Schedule</button>
     </div>
@@ -25,14 +34,16 @@ export default {
   },
   data() {
     return {
-      isScrolling: false,
+      isScrolling: false
     };
   },
   methods: {
     scroll: function(target) {
       var self = this;
 
-      if (this.isScrolling == true) { return };
+      if (this.isScrolling == true) {
+        return;
+      }
       this.isScrolling = true;
       this.$emit("toggleSnap", false);
 
@@ -61,11 +72,11 @@ export default {
 <style scoped>
 /* Active Button */
 .nav-button-active div {
-  background-color: #22A460;
+  background-color: #22a460;
 }
 
 .nav-button-active button {
-  color: #22A460;
+  color: #22a460;
 }
 
 button {
@@ -93,12 +104,12 @@ button {
 }
 
 .nav-button-line {
-    transition: background-color 0.4s ease;
-    background-color: #353535;
-    border-radius: 1000px;
-    width: 75%;
-    height: 5%;
-    margin: 0 auto;
+  transition: background-color 0.4s ease;
+  background-color: #353535;
+  border-radius: 1000px;
+  width: 75%;
+  height: 5%;
+  margin: 0 auto;
 }
 
 .tab-bar {
@@ -110,7 +121,7 @@ button {
 }
 
 @media screen and (min-width: 700px) and (max-width: 1100px) {
-  .tab-bar{
+  .tab-bar {
     width: 50vw;
   }
 }
