@@ -28,15 +28,15 @@ class Origin():
         return json
 
 
-def json_response(payload, status=200, cookies={}):
-    if status >= 200 and status < 300:
+def json_response(payload, success=True, cookies={}, code=200):
+    if status == True:
         envelope = {"status": "success",
                     "payload": payload}
     else:
         envelope = {"status": "error",
                     "message": payload}
 
-    response = Response(json.dumps(envelope, ensure_ascii=False), status=status, mimetype="application/json")
+    response = Response(json.dumps(envelope, ensure_ascii=False), status=code, mimetype="application/json")
     for key in cookies:
         response.set_cookie(key, cookies[key], expires=datetime.now() + timedelta(days=30))
 
@@ -136,7 +136,7 @@ def origin(origin_id):
 
         return json_response(response)
     else:
-        return json_response("Origin with specified id doesn't exist!", 404)
+        return json_response("Origin with specified id doesn't exist!", False, code=404)
 
 
 @app.route("/origins/geo/")
@@ -147,12 +147,12 @@ def origin_geo():
     active = request.args.get("active")
 
     if lat is None or lng is None:
-        return json_response("You must provide ?lat and ?lng query params!", 400)
+        return json_response("You must provide ?lat and ?lng query params!", False, code=400)
 
     nearest_origins = database.georadius("origins:positions", lng, lat, 1000, unit="km", sort="ASC")
 
     if nearest_origins is None:
-        return json_response("You're probably too far from any origins!", 400)
+        return json_response("You're probably too far from any origins!", False, code=200)
 
     response = {}
 
@@ -165,7 +165,7 @@ def origin_geo():
                 response[origin_id] = Origin(origin_id).json()
                 return json_response(response)
 
-        return json_response("Couldn't find any active origins nearby!", 404)
+        return json_response("Couldn't find any active origins nearby!", False, code=200)
 
     else:
         response[nearest_origins[0]] = Origin(nearest_origins[0]).json()
@@ -178,15 +178,15 @@ def schedules():
     destination = request.args.get("destination")
 
     if origin is None or destination is None:
-        return json_response("You must provide ?origin and ?destination query params!", 400)
+        return json_response("You must provide ?origin and ?destination query params!", False, code=400)
 
     try:
         offset = int(request.args.get("offset") or "0")
     except ValueError:
-        return json_response("Offset must be an integer!", 400)
+        return json_response("Offset must be an integer!", False, code=400)
 
     if offset < 0:
-        return json_response("You can't requests schedules with offset < 0!", 400)
+        return json_response("You can't requests schedules with offset < 0!", False, code=400)
 
     now = get_now() + timedelta(days=offset)
     date = now.strftime("%d.%m.%Y")
@@ -195,7 +195,7 @@ def schedules():
 
     departures = database.get("origin:{}:destination:{}:date:{}".format(origin, destination, date))
     if departures is None:
-        return json_response("Couldn't find any departures for {}!".format(date), 404)
+        return json_response("Couldn't find any departures for {}!".format(date), False, code=200)
     else:
         departures = json.loads(departures)
 
@@ -233,14 +233,14 @@ def live():
     destination = request.args.get("destination")
 
     if origin is None or destination is None:
-        return json_response("You must provide ?origin and ?destination query params!", 400)
+        return json_response("You must provide ?origin and ?destination query params!", False, code=400)
 
     now = get_now()
     date = now.strftime("%d.%m.%Y")
 
     departures = database.get("origin:{}:destination:{}:date:{}".format(origin, destination, date))
     if departures is None:
-        return json_response("Couldn't find any departures for {}!".format(date), 404)
+        return json_response("Couldn't find any departures for {}!".format(date), False, code=200)
     else:
         departures = json.loads(departures)
 
@@ -251,7 +251,7 @@ def live():
     past_departures, future_departures = sort_departures(departures, now)
 
     if not future_departures:
-        return json_response("Couldn't find any more departures for {} at this time!".format(date), 404)
+        return json_response("Couldn't find any more departures for {} at this time!".format(date), False, code=200)
 
     duration = database.get("origin:{}:destination:{}:duration".format(origin, destination))
 
