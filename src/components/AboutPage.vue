@@ -1,5 +1,5 @@
 <template>
-  <div class=page>
+  <div class="page">
     <p>About!</p>
   </div>
 </template>
@@ -17,10 +17,10 @@ export default {
 p {
   font-family: "Montserrat", sans-serif;
   text-align: center;
-  color: #F8F8F8;
+  color: #f8f8f8;
 }
 
 .page {
-  background-color: #FC736A;
+  background-color: #fc736a;
 }
 </style>

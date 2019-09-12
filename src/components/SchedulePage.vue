@@ -1,5 +1,5 @@
 <template>
-  <div class=page>
+  <div class="page">
     <p>Schedule!</p>
   </div>
 </template>
@@ -17,10 +17,10 @@ export default {
 p {
   font-family: "Montserrat", sans-serif;
   text-align: center;
-  color: #F8F8F8;
+  color: #f8f8f8;
 }
 
 .page {
-  background-color: #22A460;
+  background-color: #22a460;
 }
 </style>

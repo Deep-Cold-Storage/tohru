@@ -1,5 +1,5 @@
 <template>
-  <div class=main>
+  <div class="main">
     <button v-on:click.stop="scroll('#about-page')">About</button>
     <button v-on:click.stop="scroll('#station-page')">Station</button>
     <button v-on:click.stop="scroll('#schedule-page')">Schedule</button>
@@ -9,25 +9,38 @@
 <script>
 export default {
   name: "TabBar",
+  data() {
+    return {
+      isScrolling: false
+    };
+  },
   methods: {
-    scroll: function (target) {
+    scroll: function(target) {
       var self = this;
+
+      if (this.isScrolling == true) { return };
+      this.isScrolling = true;
       this.$emit("toggleSnap", false);
 
-      this.$scrollTo(target, 500, {
+      this.$scrollTo(target, 400, {
         container: "#slider",
         easing: "ease",
         cancelable: true,
         y: false,
         x: true,
 
-        onDone: function(element) {
-          self.$emit("toggleSnap", true)},
+        onDone: function() {
+          self.isScrolling = false;
+          self.$emit("toggleSnap", true);
+        },
 
         onCancel: function() {
-          self.$emit("toggleSnap", true)}
+          self.isScrolling = false;
+          self.$emit("toggleSnap", true);
+        }
       });
-    }}
+    }
+  }
 };
 </script>
 
@@ -37,17 +50,17 @@ p {
 }
 
 button {
-    width: 33.3%;
-    font-family: "Montserrat", sans-serif;
-    color: #F8F8F8;
-    font-weight: 500;
-    font-size: 15px;
-    height: 100%;
-    border: none;
-    background-color: Transparent;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
+  width: 33.3%;
+  font-family: "Montserrat", sans-serif;
+  color: #f8f8f8;
+  font-weight: 500;
+  font-size: 15px;
+  height: 100%;
+  border: none;
+  background-color: Transparent;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
 }
 
 .main {
