@@ -29,7 +29,7 @@ class Origin():
 
 
 def json_response(payload, success=True, cookies={}, code=200):
-    if status == True:
+    if success == True:
         envelope = {"status": "success",
                     "payload": payload}
     else:
