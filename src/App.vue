@@ -10,6 +10,7 @@
         }"/>
       <StationPage
         id="station-page"
+        v-bind:route="route"
         v-observe-visibility="{
           callback: visibilityChanged,
           throttle: 0,
@@ -17,6 +18,7 @@
         }"/>
       <SchedulePage
         id="schedule-page"
+        v-bind:route="route"
         v-observe-visibility="{
           callback: visibilityChanged,
           throttle: 0,
@@ -41,7 +43,12 @@ export default {
   data() {
     return {
       snapScroll: true,
-      visiblePage: "station-page"
+      visiblePage: "station-page",
+
+      route: {
+        origin: "tesc",
+        destination: "ctir"
+      }
     };
   },
 
@@ -104,6 +111,7 @@ p {
   color: #f8f8f8;
   font-size: 1.5rem;
   font-weight: 500;
+  text-align: left;
   letter-spacing: 0.04em;
 }
 
@@ -111,6 +119,8 @@ h1 {
   font-family: "Montserrat", sans-serif;
   color: #f8f8f8;
   font-size: 1.8rem;
+  font-weight: 500;
+  text-align: left;
   letter-spacing: 0.08em;
 }
 
@@ -118,7 +128,16 @@ h2 {
   font-family: "Montserrat", sans-serif;
   color: #f8f8f8;
   font-size: 2.3rem;
+  font-weight: 600;
+  text-align: left;
   letter-spacing: 0.04em;
+}
+/* Global Section */
+section {
+  width: 75%;
+  margin: 0 auto;
+  padding-top: 2vh;
+  line-height: 1.5;
 }
 
 /* Slider, Pages */
@@ -141,11 +160,20 @@ h2 {
   scroll-snap-align: center;
 }
 
+@media screen and (min-width: 700px) and (max-width: 1100px) {
+  section {
+    width: 50%;
+  }
+}
+
 @media screen and (min-width: 900px) and (orientation: landscape) {
   #about-page,
   #station-page,
   #schedule-page {
     min-width: 33.33vw;
+  }
+  section {
+    width: 60%;
   }
 }
 </style>
