@@ -124,7 +124,7 @@ def origins():
     for origin_id in retrieve_origins():
         response[origin_id] = Origin(origin_id).json()
 
-    return json_response(response, 200)
+    return json_response(response, True, code=200)
 
 
 @app.route("/origins/<origin_id>/")
