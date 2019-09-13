@@ -1,6 +1,6 @@
 <template>
   <div class="about-page">
-    <AboutPageInfo/>
+    <AboutPageInfo />
   </div>
 </template>
 
@@ -18,5 +18,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

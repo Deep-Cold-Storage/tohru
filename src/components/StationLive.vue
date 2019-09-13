@@ -1,10 +1,16 @@
 <template>
   <div>
     <section>
-      <h2>Departure in <span class="green">{{ betterPayload.until }}</span> min</h2>
-      <h2>At <span class="green">{{ betterPayload.schedule[0][0] }}</span></h2>
-      <h2>Arriving at <span class="red">{{ betterPayload.schedule[0][1] }}</span></h2>
-      <h2 class="error" v-if="noDepartures"> No departures today!</h2>
+      <h2>
+        Departure in <span class="green">{{ betterPayload.until }}</span> min
+      </h2>
+      <h2>
+        At <span class="green">{{ betterPayload.schedule[0][0] }}</span>
+      </h2>
+      <h2>
+        Arriving at <span class="red">{{ betterPayload.schedule[0][1] }}</span>
+      </h2>
+      <h2 class="error" v-if="noDepartures">No departures today!</h2>
     </section>
   </div>
 </template>
@@ -13,21 +19,21 @@
 export default {
   name: "StationLive",
   props: {
-      payload: {}
+    payload: {}
   },
   data() {
     return {
       noDepartures: false
-    }
+    };
   },
   computed: {
-    betterPayload: function () {
-      if (Object.keys(this.payload).length === 0){
+    betterPayload: function() {
+      if (Object.keys(this.payload).length === 0) {
         this.noDepartures = true;
-        return {"until": "00", "schedule": [["00:00", "00:00"]]}
+        return { until: "00", schedule: [["00:00", "00:00"]] };
       }
       this.noDepartures = false;
-      return this.payload
+      return this.payload;
     }
   }
 };
