@@ -1,18 +1,25 @@
 <template>
   <div class="navigation-bar">
-    <div class="navigation-bar-button" v-bind:class="{ 'nav-button-active': visiblePage == 'about-page' }">
+    <div
+      class="navigation-bar-button"
+      v-bind:class="{ 'nav-button-active': visiblePage == 'about-page' }"
+    >
       <div class="navigation-button-line"></div>
       <button v-on:click="scrollTo('#about-page')">About</button>
     </div>
 
-    <div class="navigation-bar-button"
-      v-bind:class="{ 'nav-button-active': visiblePage == 'station-page' }">
+    <div
+      class="navigation-bar-button"
+      v-bind:class="{ 'nav-button-active': visiblePage == 'station-page' }"
+    >
       <div class="navigation-button-line"></div>
       <button v-on:click="scrollTo('#station-page')">Station</button>
     </div>
 
-    <div class="navigation-bar-button"
-      v-bind:class="{ 'nav-button-active': visiblePage == 'schedule-page' }">
+    <div
+      class="navigation-bar-button"
+      v-bind:class="{ 'nav-button-active': visiblePage == 'schedule-page' }"
+    >
       <div class="navigation-button-line"></div>
       <button v-on:click="scrollTo('#schedule-page')">Schedule</button>
     </div>

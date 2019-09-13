@@ -1,9 +1,11 @@
 <template>
   <section>
-    <p><img src="../assets/origin-marker.svg" />From {{originName}}</p>
-    <p><img src="../assets/destination-marker.svg" />To {{destinationName}}</p>
-    <button>CHANGE</button>
-    <button><img src="../assets/exchange-arrows.svg" /></button>
+    <p><img src="../assets/origin-marker.svg" />From {{ originName }}</p>
+    <p>
+      <img src="../assets/destination-marker.svg" />To {{ destinationName }}
+    </p>
+    <button v-on:click="toggleSelectionPage()">CHANGE</button>
+    <button v-on:click="flipRoute()"><img src="../assets/exchange-arrows.svg" /></button>
   </section>
 </template>
 
@@ -16,8 +18,8 @@ export default {
   data() {
     return {
       originName: "",
-      destinationName: "",
-    }
+      destinationName: ""
+    };
   },
   methods: {
     getOrignName: function() {
@@ -40,7 +42,8 @@ export default {
         .get("https://tohru.sylvanas.dream/origins/" + this.route.destination)
         .then(response => {
           if (response.data.status == "success") {
-            this.destinationName = response.data.payload[this.route.destination].name;
+            this.destinationName =
+              response.data.payload[this.route.destination].name;
           } else {
             this.destinationName = "Hello";
           }
@@ -48,6 +51,14 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+
+    flipRoute: function() {
+      this.$emit("setRoute", {"origin": this.route.destination, "destination": this.route.origin});
+    },
+
+    toggleSelectionPage: function() {
+      this.$emit("toggleSelectionPage");
     }
   },
   created() {
@@ -55,12 +66,12 @@ export default {
     this.getDestinationName();
   },
   watch: {
-    'route.origin': function() {
+    "route.origin": function() {
       this.getOrignName();
     },
-    'route.destination': function() {
+    "route.destination": function() {
       this.getDestinationName();
-    },
+    }
   }
 };
 </script>

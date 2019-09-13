@@ -1,21 +1,33 @@
 <template>
   <div id="app">
-    <div id="slider" v-bind:class="{ 'slider-snap-active': snapScroll }">
+    <div v-if="isSelectingRoute" class="modal-page">
+      <SelectPage v-bind:route="route" v-on:toggleSelectionPage="toggleSelectionPage" v-on:setRoute="setRoute"/>
+    </div>
+
+    <div
+      id="slider"
+      v-show="!isSelectingRoute"
+      v-bind:class="{ 'slider-snap-active': snapScroll }"
+    >
       <AboutPage
         id="about-page"
+        v-bind:useGPS="useGPS"
         v-observe-visibility="{
           callback: visibilityChanged,
           throttle: 0,
           intersection: { threshold: 1, rootMargin: '20%' }
-        }"/>
+        }"
+      />
       <StationPage
         id="station-page"
+        v-on:toggleSelectionPage="toggleSelectionPage" v-on:setRoute="setRoute"
         v-bind:route="route"
         v-observe-visibility="{
           callback: visibilityChanged,
           throttle: 0,
           intersection: { threshold: 1, rootMargin: '20%' }
-        }"/>
+        }"
+      />
       <SchedulePage
         id="schedule-page"
         v-bind:route="route"
@@ -23,9 +35,11 @@
           callback: visibilityChanged,
           throttle: 0,
           intersection: { threshold: 1, rootMargin: '20%' }
-        }"/>
+        }"
+      />
     </div>
     <NavigationBar
+      v-show="!isSelectingRoute"
       v-on:toggleSnap="toggleSnapScroll"
       v-bind:visiblePage="visiblePage"
     />
@@ -37,13 +51,16 @@ import AboutPage from "./components/AboutPage.vue";
 import StationPage from "./components/StationPage.vue";
 import SchedulePage from "./components/SchedulePage.vue";
 import NavigationBar from "./components/NavigationBar.vue";
-
+import SelectPage from "./components/SelectPage.vue";
 export default {
   name: "app",
   data() {
     return {
       snapScroll: true,
       visiblePage: "station-page",
+
+      useGPS: false,
+      isSelectingRoute: false,
 
       route: {
         origin: "tesc",
@@ -56,6 +73,7 @@ export default {
     AboutPage,
     StationPage,
     SchedulePage,
+    SelectPage,
     NavigationBar
   },
 
@@ -64,10 +82,18 @@ export default {
       this.snapScroll = boolean;
     },
 
+    toggleSelectionPage: function() {
+      this.isSelectingRoute = !this.isSelectingRoute;
+    },
+
+    setRoute: function(new_route) {
+      this.route = new_route;
+    },
+
     visibilityChanged(isVisible, entry) {
       if (isVisible == true) {
         this.visiblePage = entry.target.id;
-      };
+      }
     }
   },
 
@@ -78,8 +104,7 @@ export default {
       force: true,
       y: false,
       x: true
-      }
-    );
+    });
   }
 };
 </script>
@@ -160,6 +185,13 @@ section {
   scroll-snap-align: center;
 }
 
+/* Modal */
+.modal-page {
+  border: 0;
+  height: 100vh;
+  width: 100vw;
+}
+
 @media screen and (min-width: 700px) and (max-width: 1100px) {
   section {
     width: 50%;
@@ -174,6 +206,10 @@ section {
   }
   section {
     width: 60%;
+  }
+  .modal-page {
+    width: 33.3vw;
+    margin: 0 auto;
   }
 }
 </style>

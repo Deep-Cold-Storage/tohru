@@ -1,22 +1,22 @@
 <template>
   <div>
     <AboutPageInfo />
+    <AboutPageOptions v-bind:useGPS="useGPS" />
   </div>
 </template>
 
 <script>
 import AboutPageInfo from "./AboutPageInfo.vue";
+import AboutPageOptions from "./AboutPageOptions.vue";
 
 export default {
   name: "AboutPage",
   components: {
-    AboutPageInfo
+    AboutPageInfo,
+    AboutPageOptions
   },
   props: {
-    msg: String
+    useGPS: Boolean
   }
 };
 </script>
-
-<style scoped>
-</style>
