@@ -1,12 +1,17 @@
 <template>
-  <div class="page">
-    <p>About!</p>
+  <div class="about-page">
+    <AboutPageInfo/>
   </div>
 </template>
 
 <script>
+import AboutPageInfo from "./AboutPageInfo.vue";
+
 export default {
   name: "AboutPage",
+  components: {
+    AboutPageInfo
+  },
   props: {
     msg: String
   }
@@ -14,9 +19,4 @@ export default {
 </script>
 
 <style scoped>
-p {
-  font-family: "Montserrat", sans-serif;
-  text-align: center;
-  color: #f8f8f8;
-}
 </style>
