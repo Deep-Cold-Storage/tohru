@@ -60,6 +60,14 @@ export default {
         });
     }
   },
+  watch: {
+    "route.origin": function() {
+      this.getLiveData();
+    },
+    "route.destination": function() {
+      this.getLiveData();
+    }
+  },
   created() {
     this.getLiveData();
 

@@ -1,11 +1,17 @@
 <template>
   <section>
-    <p><img src="../assets/origin-marker.svg" />From {{ originName }}</p>
     <p>
-      <img src="../assets/destination-marker.svg" />To {{ destinationName }}
+      <img class="location-icon" src="../assets/origin-marker.svg" />From
+      {{ originName }}
+    </p>
+    <p>
+      <img class="location-icon" src="../assets/destination-marker.svg" />To
+      {{ destinationName }}
     </p>
     <button v-on:click="toggleSelectionPage()">CHANGE</button>
-    <button v-on:click="flipRoute()"><img src="../assets/exchange-arrows.svg" /></button>
+    <button v-on:click="flipRoute()">
+      <img class="flip-icon" src="../assets/exchange-arrows.svg" />
+    </button>
   </section>
 </template>
 
@@ -54,7 +60,13 @@ export default {
     },
 
     flipRoute: function() {
-      this.$emit("setRoute", {"origin": this.route.destination, "destination": this.route.origin});
+      var temp = this.originName;
+      this.originName = this.destinationName;
+      this.destinationName = temp;
+      this.$emit("setRoute", {
+        origin: this.route.destination,
+        destination: this.route.origin
+      });
     },
 
     toggleSelectionPage: function() {
@@ -77,7 +89,15 @@ export default {
 </script>
 
 <style scoped>
-img {
+.location-icon {
+  width: 14px;
+  height: auto;
+  vertical-align: middle;
+  margin-right: 8px;
+  margin-left: 4px;
+}
+
+.flip-icon {
   width: 14px;
   height: auto;
   vertical-align: middle;

@@ -1,22 +1,9 @@
-<template>
-  <div class="page">
-    <p>Schedule!</p>
-  </div>
-</template>
+<template> </template>
 
 <script>
 export default {
-  name: "SchedulePage",
-  props: {
-    msg: String
-  }
+  name: "SchedulePage"
 };
 </script>
 
-<style scoped>
-p {
-  font-family: "Montserrat", sans-serif;
-  text-align: center;
-  color: #f8f8f8;
-}
-</style>
+<style scoped></style>

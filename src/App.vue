@@ -1,7 +1,11 @@
 <template>
   <div id="app">
-    <div v-if="isSelectingRoute" class="modal-page">
-      <SelectPage v-bind:route="route" v-on:toggleSelectionPage="toggleSelectionPage" v-on:setRoute="setRoute"/>
+    <div v-show="isSelectingRoute" class="modal-page">
+      <SelectPage
+        v-bind:route="route"
+        v-on:toggleSelectionPage="toggleSelectionPage"
+        v-on:setRoute="setRoute"
+      />
     </div>
 
     <div
@@ -20,7 +24,8 @@
       />
       <StationPage
         id="station-page"
-        v-on:toggleSelectionPage="toggleSelectionPage" v-on:setRoute="setRoute"
+        v-on:toggleSelectionPage="toggleSelectionPage"
+        v-on:setRoute="setRoute"
         v-bind:route="route"
         v-observe-visibility="{
           callback: visibilityChanged,
@@ -128,6 +133,11 @@ body {
   margin: 0;
   overflow: hidden;
   background-color: #131313;
+
+  background-image: url("./assets/tohru-bg.svg");
+  background-repeat: no-repeat;
+  background-position: 90% 50%;
+  background-size: 160%;
 }
 
 /* Global Text Style */
@@ -159,7 +169,7 @@ h2 {
 }
 /* Global Section */
 section {
-  width: 75%;
+  width: 78%;
   margin: 0 auto;
   padding-top: 2vh;
   line-height: 1.5;
@@ -192,9 +202,18 @@ section {
   width: 100vw;
 }
 
+@media screen and (min-width: 100px) and (max-width: 340px) {
+  html {
+    font-size: 9px;
+  }
+}
+
 @media screen and (min-width: 700px) and (max-width: 1100px) {
   section {
-    width: 50%;
+    width: 40%;
+  }
+  body {
+    background-size: 100%;
   }
 }
 
@@ -205,11 +224,18 @@ section {
     min-width: 33.33vw;
   }
   section {
-    width: 60%;
+    width: 70%;
   }
   .modal-page {
     width: 33.3vw;
     margin: 0 auto;
+  }
+  html {
+    font-size: 11px;
+  }
+  body {
+    background-size: 50%;
+    background-position: 40% 50%;
   }
 }
 </style>

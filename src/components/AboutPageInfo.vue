@@ -83,8 +83,7 @@ button {
   color: #22A460;
   background-color: Transparent;
 
-  padding-left: 10px;
-  padding-right: 10px;
+  padding: 8px; 
 
   border-radius: 8px;
   border: 2px solid #22A460;

@@ -2,9 +2,13 @@
   <section>
     <h2>Route selection</h2>
     <template v-if="!isOriginSelected">
-      <p>Select origin</p>
+      <p>
+        <img class="location-icon" src="../assets/origin-marker.svg" />Select
+        <span class="green">Origin</span>
+      </p>
       <div v-for="(item, key) in allOrigins" v-bind:key="item.name">
-        <button class="select-button"
+        <button
+          class="select-button"
           v-on:click="selectOrigin(key)"
           v-bind:class="{ 'selected-green': checkOriginSelection(key) }"
         >
@@ -14,9 +18,15 @@
     </template>
 
     <template v-if="isOriginSelected">
-      <p>Select destination</p>
+      <p>
+        <img
+          class="location-icon"
+          src="../assets/destination-marker.svg"
+        />Select <span class="red">Destination</span>
+      </p>
       <div v-for="(item, key) in allDestinations" v-bind:key="item.name">
-        <button class="select-button"
+        <button
+          class="select-button"
           v-on:click="selectDestination(key)"
           v-bind:class="{ 'selected-red': checkDestinationSelection(key) }"
         >
@@ -38,7 +48,7 @@ export default {
       allOrigins: Object,
 
       selectedOrigin: this.route.origin,
-      selectedDestination: this.route.destination,
+      selectedDestination: this.route.destination
     };
   },
   props: {
@@ -61,13 +71,13 @@ export default {
     checkOriginSelection: function(origin_code) {
       if (this.selectedOrigin === origin_code) {
         return true;
-      };
+      }
       return false;
     },
     checkDestinationSelection: function(destination_code) {
       if (this.selectedDestination === destination_code) {
         return true;
-      };
+      }
       return false;
     },
 
@@ -79,8 +89,12 @@ export default {
       this.selectedDestination = destination_code;
     },
     acceptSelection: function() {
-      this.$emit("setRoute", {"origin": this.selectedOrigin, "destination": this.selectedDestination});
+      this.$emit("setRoute", {
+        origin: this.selectedOrigin,
+        destination: this.selectedDestination
+      });
       this.$emit("toggleSelectionPage");
+      this.isOriginSelected = false;
     }
   },
   computed: {
@@ -103,6 +117,13 @@ export default {
 </script>
 
 <style scoped>
+.location-icon {
+  width: 14px;
+  height: auto;
+  vertical-align: middle;
+  margin-right: 8px;
+  margin-left: 4px;
+}
 
 .select-button {
   font-family: "Montserrat", sans-serif;
@@ -122,14 +143,14 @@ button {
   text-align: center;
   text-decoration: none;
 
-  color: #22A460;
+  color: #22a460;
   background-color: Transparent;
 
   padding-left: 10px;
   padding-right: 10px;
 
   border-radius: 8px;
-  border: 2px solid #22A460;
+  border: 2px solid #22a460;
 
   outline: none;
   display: block;
@@ -138,14 +159,19 @@ button {
   margin-left: auto;
   margin-right: auto;
 }
-
+.green {
+  color: #22a460;
+}
 .selected-green {
   color: #22a460;
   border: 2px solid #22a460;
 }
 
 .selected-red {
-  color: #FC736A;
-  border: 2px solid #FC736A;
+  color: #fc736a;
+  border: 2px solid #fc736a;
+}
+.red {
+  color: #fc736a;
 }
 </style>

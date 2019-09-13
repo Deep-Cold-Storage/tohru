@@ -1,6 +1,10 @@
 <template>
   <div>
-    <StationPageRoute v-on:toggleSelectionPage="toggleSelectionPage" v-on:setRoute="setRoute" v-bind:route="route" />
+    <StationPageRoute
+      v-on:toggleSelectionPage="toggleSelectionPage"
+      v-on:setRoute="setRoute"
+      v-bind:route="route"
+    />
     <StationPageLive v-bind:route="route" />
   </div>
 </template>
