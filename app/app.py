@@ -195,7 +195,12 @@ def schedules():
 
     departures = database.get("origin:{}:destination:{}:date:{}".format(origin, destination, date))
     if departures is None:
-        return json_response("Couldn't find any departures for {}!".format(date), False, code=200)
+        response = {"date": date,
+                    "offset": offset,
+                    "origin": origin,
+                    "destination": destination,
+                    "schedule": []}
+        return json_response(response, cookies={"UUID": cookie})
     else:
         departures = json.loads(departures)
 
