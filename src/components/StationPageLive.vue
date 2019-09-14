@@ -15,7 +15,7 @@
     </template>
 
     <template v-if="noDepartures">
-      <h2 class="color-red">No departures!</h2>
+      <h2 class="color-red">No departures !</h2>
       <p>Tohru couldn't find any close departures for today!</p>
       <p>You could always try to change selected route.</p>
     </template>

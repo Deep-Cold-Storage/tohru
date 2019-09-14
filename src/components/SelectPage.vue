@@ -15,6 +15,8 @@
           {{ item.name }}
         </button>
       </div>
+      <button class="navigation-button selected-red" v-on:click="cancelSelection()">CANCEL</button>
+      <button class="navigation-button selected-green witdh-boost" v-on:click="nextSelection()">NEXT</button>
     </template>
 
     <template v-if="isOriginSelected">
@@ -33,7 +35,8 @@
           {{ item.name }}
         </button>
       </div>
-      <button v-on:click="acceptSelection()">ACCEPT</button>
+      <button class="navigation-button selected-red"  v-on:click="cancelSelection()">CANCEL</button>
+      <button class="navigation-button selected-green witdh-boost" v-on:click="acceptSelection()">ACCEPT</button>
     </template>
   </section>
 </template>
@@ -82,7 +85,6 @@ export default {
     },
 
     selectOrigin: function(origin_code) {
-      this.isOriginSelected = true;
       this.selectedOrigin = origin_code;
     },
     selectDestination: function(destination_code) {
@@ -95,6 +97,15 @@ export default {
       });
       this.$emit("toggleSelectionPage");
       this.isOriginSelected = false;
+    },
+    cancelSelection: function() {
+      this.$emit("toggleSelectionPage");
+      this.isOriginSelected = false;
+      this.selectedOrigin = this.route.origin;
+      this.selectedDestination = this.route.destination;
+    },
+    nextSelection: function() {
+      this.isOriginSelected = true;
     }
   },
   computed: {
@@ -126,39 +137,39 @@ export default {
 }
 
 .select-button {
+  transition: all 0.3s ease;
+
   font-family: "Montserrat", sans-serif;
   color: #f8f8f8;
   height: 40px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 700;
   width: 100%;
   margin-top: 8px;
   border: 2px solid #353535;
+  display: block;
+  background-color: Transparent;
+  outline: none;
 }
 
-button {
+.witdh-boost {
+  padding-left: 50px;
+  padding-right: 50px;
+  float: right;
+}
+
+.navigation-button {
   font-family: "Montserrat", sans-serif;
+  height: 40px;
   font-size: 15px;
   font-weight: 700;
-  padding: 10px;
-  width: 40%;
-  text-align: center;
-  text-decoration: none;
-
-  color: #22a460;
-  background-color: Transparent;
-
-  padding-left: 10px;
-  padding-right: 10px;
-
   border-radius: 8px;
-  border: 2px solid #22a460;
-
-  outline: none;
-  display: block;
-  margin-top: 10vh;
-  margin-bottom: 1vh;
-  margin-left: auto;
-  margin-right: auto;
+  margin-top: 50px;
+  border: 2px solid #353535;
+  background-color: Transparent;
 }
+
 .green {
   color: #22a460;
 }

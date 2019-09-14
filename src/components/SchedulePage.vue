@@ -1,9 +1,22 @@
-<template> </template>
+<template>
+  <div>
+    <SchedulePageTimetable v-bind:route="route"/>
+  </div>
+</template>
 
 <script>
+import SchedulePageTimetable from "./SchedulePageTimetable.vue";
+
 export default {
-  name: "SchedulePage"
+  name: "SchedulePage",
+  components: {
+    SchedulePageTimetable,
+  },
+  props: {
+    route: Object,
+  }
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>

@@ -1,5 +1,11 @@
 <template>
   <div id="app">
+    <div class="modal-page anti-rotate" >
+      <section>
+        <h2>Rotate screen !</h2>
+      </section>
+    </div>
+
     <div v-show="isSelectingRoute" class="modal-page">
       <SelectPage
         v-bind:route="route"
@@ -110,6 +116,22 @@ export default {
       y: false,
       x: true
     });
+
+    if (localStorage.origin) {
+      this.route.origin = localStorage.origin;
+    };
+
+    if (localStorage.destination) {
+      this.route.destination = localStorage.destination;
+    };
+  },
+  watch: {
+    "route.origin"(origin) {
+      localStorage.origin = origin;
+    },
+    "route.destination"(destination) {
+      localStorage.destination = destination;
+    }
   }
 };
 </script>
@@ -202,11 +224,22 @@ section {
   width: 100vw;
 }
 
+.anti-rotate {
+  display: none;
+}
+
 @media screen and (min-width: 100px) and (max-width: 340px) {
   html {
     font-size: 9px;
   }
 }
+
+@media screen and (min-width: 100px) and (max-width: 1000px) and (max-height: 550px)  and (orientation: landscape) {
+  html {
+    opacity: 0;
+  }
+}
+
 
 @media screen and (min-width: 700px) and (max-width: 1100px) {
   section {
