@@ -21,6 +21,7 @@
     >
       <AboutPage
         id="about-page"
+        v-on:setGPS="setGPS"
         v-bind:useGPS="useGPS"
         v-observe-visibility="{
           callback: visibilityChanged,
@@ -73,10 +74,12 @@ export default {
       useGPS: false,
       isSelectingRoute: false,
 
+      favouriteDestinations: [],
+
       route: {
         origin: "tesc",
         destination: "ctir"
-      }
+      },
     };
   },
 
@@ -101,9 +104,40 @@ export default {
       this.route = new_route;
     },
 
-    visibilityChanged(isVisible, entry) {
+    visibilityChanged: function(isVisible, entry) {
       if (isVisible == true) {
         this.visiblePage = entry.target.id;
+      }
+    },
+    setGPS: function(boolean) {
+      this.useGPS = boolean;
+    },
+    smartSelectOrigin: function() {
+      navigator.geolocation.getCurrentPosition(success);
+      var self = this;
+
+      function success(pos) {
+        var crd = pos.coords;
+
+        self.$http
+          .get("https://tohru.sylvanas.dream/origins/geo/?lat=" + crd.longitude + "&lng=" + crd.latitude + "&active=true")
+          .then(response => {
+            if (response.data.status == "success") {
+              var reversed = self.favouriteDestinations.reverse()
+              var key = Object.keys(response.data.payload)[0];
+              var connections = response.data.payload[key].connections
+
+              for (index = 0; index < reversed.length; ++index) {
+                if (connections.includes(reversed[index])) {
+                  self.route = {"origin": key, "destination": reversed[index]}
+                }
+              }
+
+            }
+            })
+          .catch(error => {
+            console.log(error);
+          });
       }
     }
   },
@@ -124,6 +158,16 @@ export default {
     if (localStorage.destination) {
       this.route.destination = localStorage.destination;
     };
+
+    if (localStorage.useGPS) {
+      this.useGPS = JSON.parse(localStorage.useGPS);
+    };
+
+    if (localStorage.favouriteDestinations) {
+      this.favouriteDestinations = JSON.parse(localStorage.favouriteDestinations);
+    };
+
+    smartSelectOrigin();
   },
   watch: {
     "route.origin"(origin) {
@@ -131,6 +175,17 @@ export default {
     },
     "route.destination"(destination) {
       localStorage.destination = destination;
+
+      this.favouriteDestinations.push(destination)
+      if (this.favouriteDestinations.length > 6) {
+        this.favouriteDestinations.shift()
+      }
+    },
+    favouriteDestinations (new_array) {
+      localStorage.favouriteDestinations = JSON.stringify(new_array);
+    },
+    useGPS (boolean) {
+      localStorage.useGPS = boolean;
     }
   }
 };

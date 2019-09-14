@@ -15,6 +15,8 @@
           {{ item.name }}
         </button>
       </div>
+      <button class="action-button" v-if="!hasGPSfailed" v-on:click="getNearestOrigin()"><img class="icon" src="../assets/compass-icon.svg" />USE GPS</button>
+
       <button class="navigation-button selected-red" v-on:click="cancelSelection()">CANCEL</button>
       <button class="navigation-button selected-green witdh-boost" v-on:click="nextSelection()">NEXT</button>
     </template>
@@ -51,7 +53,9 @@ export default {
       allOrigins: Object,
 
       selectedOrigin: this.route.origin,
-      selectedDestination: this.route.destination
+      selectedDestination: this.route.destination,
+
+      hasGPSfailed: false
     };
   },
   props: {
@@ -106,6 +110,32 @@ export default {
     },
     nextSelection: function() {
       this.isOriginSelected = true;
+    },
+    checkGPSsuport: function() {
+      return navigator.geolocation
+    },
+    getNearestOrigin: function() {
+      navigator.geolocation.getCurrentPosition(success, error);
+      var self = this;
+
+      function error() {
+        self.hasGPSfailed = true;
+      };
+
+      function success(pos) {
+        var crd = pos.coords;
+
+        self.$http
+          .get("https://tohru.sylvanas.dream/origins/geo/?lat=" + crd.longitude + "&lng=" + crd.latitude)
+          .then(response => {
+            if (response.data.status == "success") {
+              self.selectedOrigin = Object.keys(response.data.payload)[0];
+            }
+            })
+          .catch(error => {
+            console.log(error);
+          });
+      }
     }
   },
   computed: {
@@ -128,12 +158,39 @@ export default {
 </script>
 
 <style scoped>
+.icon {
+  display: inline;
+  width: 1.5rem;
+  vertical-align: middle;
+  margin-right: 4px;
+  margin-left: 4px;
+}
+
 .location-icon {
   width: 14px;
   height: auto;
   vertical-align: middle;
   margin-right: 8px;
   margin-left: 4px;
+}
+
+.action-button {
+  font-family: "Montserrat", sans-serif;
+  color: #353535;
+  height: 40px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-right: 10px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 15px;
+  text-align: center;
+  text-decoration: none;
+  border: 2px solid #353535;
+  outline: none;
+  display: block;
+  margin-top: 8px;
+  background-color: Transparent;
 }
 
 .select-button {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <AboutPageInfo />
-    <AboutPageOptions v-bind:useGPS="useGPS" />
+    <AboutPageOptions v-on:setGPS="setGPS" v-bind:useGPS="useGPS" />
   </div>
 </template>
 
@@ -17,6 +17,11 @@ export default {
   },
   props: {
     useGPS: Boolean
+  },
+  methods: {
+    setGPS: function(boolean) {
+      this.$emit("setGPS", boolean);
+    }
   }
 };
 </script>

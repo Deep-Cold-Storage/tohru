@@ -5,12 +5,14 @@
       Use GPS :
       <button
         v-bind:class="{ 'toggle-button-green': useGPS }"
+        v-on:click="setGPS(true)"
         class="toggle-button"
       >
         YES
       </button>
       <button
         v-bind:class="{ 'toggle-button-red': !useGPS }"
+        v-on:click="setGPS(false)"
         class="toggle-button"
       >
         NO
@@ -24,6 +26,11 @@ export default {
   name: "AboutPageOptions",
   props: {
     useGPS: Boolean
+  },
+  methods: {
+    setGPS: function(boolean) {
+      this.$emit("setGPS", boolean);
+    }
   }
 };
 </script>

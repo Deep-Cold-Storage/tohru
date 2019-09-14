@@ -3,7 +3,7 @@
     <p><img class="clock-icon" src="../assets/clock-icon.svg"/>Day {{daySchedule.date}}</p>
     <div class="timetable">
       <transition-group name="list">
-        <div :key="item" class="timetable-item" v-for="(item, key) in daySchedule.schedule" v-bind:key="item.offset">
+        <div :key="key" class="timetable-item" v-for="(item, key) in daySchedule.schedule" v-bind:key="item.offset">
           <div><h1 class="green">{{item[0]}}</h1></div> <div><h1>---</h1> </div> <div><h1 class="red">{{item[1]}}</h1></div>
         </div>
       </transition-group>
