@@ -210,7 +210,7 @@ export default {
 .action-button {
   font-family: "Montserrat", sans-serif;
   color: #353535;
-  height: 40px;
+  height: 4.0rem;
   padding-left: 10px;
   padding-right: 10px;
   margin-right: 10px;

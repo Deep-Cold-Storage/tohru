@@ -1,13 +1,13 @@
 <template>
   <section>
     <h2>Hello,</h2>
-    <h2>My name is<span class="text-green"> Tohru </span>!</h2>
+    <h2>My name is<span class="green"> Tohru </span>!</h2>
 
-    <img class="tohru-logo" src="../assets/tohru-logo.svg"></img>
+    <img class="logo" src="../assets/tohru-logo.svg"></img>
 
     <p>Web app created to help get between WSiZ university campuses using the private bus.</p>
 
-    <button v-if="supportShareAPI" v-on:click="shareApp"><img class="icon" src="../assets/heart-icon.svg">SHARE</button>
+    <button class="button-share" v-if="supportShareAPI" v-on:click="shareApp"><img class="icon" src="../assets/heart-icon.svg">SHARE</button>
   </section>
 </template>
 
@@ -48,7 +48,7 @@ h2 {
   line-height: 1;
 }
 
-.tohru-logo {
+.logo {
   width: 30%;
   display: block;
 
@@ -67,13 +67,13 @@ h2 {
   margin-left: 4px;
 }
 
-.text-green {
+.green {
   color: #22a460;
 }
 
-button {
+.button-share {
   font-family: "Montserrat", sans-serif;
-  font-size: 15px;
+  font-size: 1.5rem;
   font-weight: 700;
 
   text-align: center;

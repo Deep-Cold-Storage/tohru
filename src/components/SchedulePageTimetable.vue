@@ -155,7 +155,7 @@ h1 {
   opacity: 0;
 }
 
-@media screen and (min-width: 900px) and (orientation: landscape) {
+@media (min-width: 1300px) {
   .timetable::-webkit-scrollbar {
     display: none;
   }

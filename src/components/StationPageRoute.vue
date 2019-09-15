@@ -98,7 +98,7 @@ export default {
 }
 
 .flip-icon {
-  width: 14px;
+  width: 1.4rem;
   height: auto;
   vertical-align: middle;
   margin-right: 4px;
@@ -108,13 +108,13 @@ export default {
 button {
   font-family: "Montserrat", sans-serif;
   color: #353535;
-  height: 40px;
-  padding-left: 10px;
-  padding-right: 10px;
-  margin-right: 10px;
+  height: 4.0rem;
+  padding-left: 1.0rem;
+  padding-right: 1.0rem;
+  margin-right: 1.0rem;
   border-radius: 8px;
   font-weight: 700;
-  font-size: 15px;
+  font-size: 1.5rem;
   text-align: center;
   text-decoration: none;
   border: 2px solid #353535;

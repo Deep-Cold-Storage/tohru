@@ -45,10 +45,10 @@ export default {
 }
 
 button {
-  height: 40px;
+  height: 4.0rem;
 
   font-family: "Montserrat", sans-serif;
-  font-size: 15px;
+  font-size: 1.5rem;
   font-weight: 700;
 
   text-align: center;
@@ -57,11 +57,11 @@ button {
   color: #22a460;
   background-color: Transparent;
 
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 1.0rem;
+  padding-right: 1.0rem;
 
-  margin-left: 10px;
-  margin-right: 4px;
+  margin-left: 1.0rem;
+  margin-right: 0.4rem;
 
   border-radius: 8px;
   border: 2px solid #22a460;

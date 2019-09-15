@@ -15,6 +15,7 @@
 
       <AboutPage
         id="about-page"
+        class="page"
         v-on:setSmartRoute="setSmartRoute"
         v-bind:useSmartRoute="useSmartRoute"
         v-observe-visibility="{
@@ -26,6 +27,7 @@
 
       <StationPage
         id="station-page"
+        class="page"
         v-on:toggleSelectPage="toggleSelectPage"
         v-on:setRoute="setRoute"
         v-bind:route="route"
@@ -38,6 +40,7 @@
 
       <SchedulePage
         id="schedule-page"
+        class="page"
         v-bind:route="route"
         v-observe-visibility="{
           callback: visibilityChange,
@@ -142,20 +145,18 @@ export default {
           )
           .then(response => {
             if (response.data.status == "success") {
-              var reversed = self.lastUsedDestinations.reverse();
-              var key = Object.keys(response.data.payload)[0];
-              var connections = response.data.payload[key].connections;
+              var reversedDestinations = self.lastUsedDestinations.reverse();
+              var nearestOrigin = Object.keys(response.data.payload)[0];
+              var originConnections = response.data.payload[nearestOrigin].connections;
 
-              for (index = 0; index < reversed.length; ++index) {
-                if (connections.includes(reversed[index])) {
-                  self.route = { origin: key, destination: reversed[index] };
+              for (var i = 0; i < reversedDestinations.length; ++i) {
+                if (originConnections.includes(reversedDestinations[i])) {
+                  self.setRoute({origin: nearestOrigin, destination: reversedDestinations[i]})
+                  return null;
                 }
               }
             }
           })
-          .catch(error => {
-            console.log(error);
-          });
       }
     }
   },
@@ -183,7 +184,7 @@ export default {
       this.lastUsedDestinations = JSON.parse(localStorage.lastUsedDestinations);
     };
 
-    selectSmartRoute();
+    this.selectSmartRoute();
   },
 
   watch: {
@@ -278,9 +279,7 @@ section {
   scroll-snap-type: x mandatory;
 }
 
-#about-page,
-#station-page,
-#schedule-page {
+.page {
   border: 0;
   height: 100vh;
   min-width: 100vw;
@@ -295,41 +294,56 @@ section {
   width: 100vw;
 }
 
-
-@media screen and (min-width: 100px) and (max-width: 340px) {
+/* Small Phones (Portrait) */
+@media screen and (max-width: 359px) {
   html {
-    font-size: 9px;
+    font-size: 7px;
   }
 }
 
-@media screen and (min-width: 700px) and (max-width: 1100px) {
+/* All Phones (Landscape) */
+@media (max-width: 1300px) and (max-height: 600px) and (orientation: landscape) {
+
+  body {
+    background-color: white;
+  }
+
+}
+
+/* Tablets (Portrait) */
+@media screen and (min-width: 750px) and (max-width: 1300px) {
   section {
     width: 40%;
   }
+
   body {
     background-size: 100%;
   }
 }
 
-@media screen and (min-width: 900px) and (orientation: landscape) {
-  #about-page,
-  #station-page,
-  #schedule-page {
-    min-width: 33.33vw;
-  }
-  section {
-    width: 70%;
-  }
-  .page-overlay {
-    width: 33.3vw;
-    margin: 0 auto;
-  }
+/* Desktop (Landscape) */
+@media (min-width: 1300px) {
   html {
     font-size: 11px;
   }
+
   body {
     background-size: 50%;
     background-position: 40% 50%;
   }
+
+  section {
+    width: 70%;
+  }
+
+  .page {
+    min-width: 33.33vw;
+  }
+
+  .page-overlay {
+    width: 33.3vw;
+    margin: 0 auto;
+  }
 }
+
 </style>

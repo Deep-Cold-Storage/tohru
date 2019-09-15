@@ -125,13 +125,15 @@ export default {
   color: #22a460;
 }
 
-@media screen and (min-width: 700px) and (max-width: 1100px) {
+/* Tablets */
+@media screen and (min-width: 750px) and (max-width: 1300px) {
   .navigation-bar {
     width: 50vw;
   }
 }
 
-@media screen and (min-width: 900px) and (orientation: landscape) {
+/* Desktop */
+@media (min-width: 1300px) {
   .navigation-bar {
     display: none;
   }
