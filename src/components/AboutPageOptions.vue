@@ -1,22 +1,17 @@
 <template>
   <section>
     <p><img class="icon" src="../assets/cogs-icon.svg" />Options</p>
-    <p>
-      Use Smart-Route :
+    <p>Use Smart-Route :
       <button
+        class="toggle-button"
         v-bind:class="{ 'toggle-button-green': useSmartRoute }"
         v-on:click="setSmartRoute(true)"
-        class="toggle-button"
-      >
-        YES
-      </button>
+      >YES</button>
       <button
+        class="toggle-button"
         v-bind:class="{ 'toggle-button-red': !useSmartRoute }"
         v-on:click="setSmartRoute(false)"
-        class="toggle-button"
-      >
-        NO
-      </button>
+      >NO</button>
     </p>
   </section>
 </template>
@@ -36,37 +31,32 @@ export default {
 </script>
 
 <style scoped>
+button {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  height: 4.0rem;
+
+  background-color: Transparent;
+
+  border-radius: 0.8rem;
+
+  padding-left: 1.0rem;
+  padding-right: 1.0rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+}
+
 .icon {
-  width: 20px;
+  width: 2.0rem;
   height: auto;
   vertical-align: middle;
   margin-right: 10px;
   margin-left: 4px;
-}
-
-button {
-  height: 4.0rem;
-
-  font-family: "Montserrat", sans-serif;
-  font-size: 1.5rem;
-  font-weight: 700;
-
-  text-align: center;
-  text-decoration: none;
-
-  color: #22a460;
-  background-color: Transparent;
-
-  padding-left: 1.0rem;
-  padding-right: 1.0rem;
-
-  margin-left: 1.0rem;
-  margin-right: 0.4rem;
-
-  border-radius: 8px;
-  border: 2px solid #22a460;
-
-  outline: none;
 }
 
 .toggle-button {

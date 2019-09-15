@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-      <SelectPage
-        v-show="showSelectPage" class="page-overlay"
-        v-bind:route="route"
-        v-on:toggleSelectPage="toggleSelectPage"
-        v-on:setRoute="setRoute"
-      />
+    <SelectPage
+      v-show="showSelectPage" class="page-overlay"
+      v-bind:route="route"
+      v-on:toggleSelectPage="toggleSelectPage"
+      v-on:setRoute="setRoute"
+    />
 
     <div
       id="slider"
@@ -261,7 +261,8 @@ h2 {
   text-align: left;
   letter-spacing: 0.04em;
 }
-/* Global Section */
+
+/* Global Misc */
 section {
   width: 78%;
   margin: 0 auto;
@@ -302,12 +303,10 @@ section {
 }
 
 /* All Phones (Landscape) */
-@media (max-width: 1300px) and (max-height: 600px) and (orientation: landscape) {
-
+@media (max-width: 1000px) and (min-aspect-ratio: 13/9) {
   body {
-    background-color: white;
+    opacity: 0;
   }
-
 }
 
 /* Tablets (Portrait) */
