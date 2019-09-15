@@ -1,7 +1,10 @@
 <template>
   <div>
-    <AboutPageInfo/>
-    <AboutPageOptions v-on:setSmartRoute="setSmartRoute" v-bind:useSmartRoute="useSmartRoute" />
+    <AboutPageInfo />
+    <AboutPageOptions
+      v-on:setSmartRoute="setSmartRoute"
+      v-bind:useSmartRoute="useSmartRoute"
+    />
   </div>
 </template>
 
@@ -17,13 +20,13 @@ export default {
   },
 
   props: {
-    useSmartRoute: Boolean,
+    useSmartRoute: Boolean
   },
 
   methods: {
     setSmartRoute: function(boolean) {
       this.$emit("setSmartRoute", boolean);
-    },
+    }
   }
 };
 </script>

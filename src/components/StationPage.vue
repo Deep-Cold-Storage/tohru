@@ -19,9 +19,11 @@ export default {
     StationPageRoute,
     StationPageLive
   },
+
   props: {
     route: Object
   },
+
   methods: {
     setRoute: function(data) {
       this.$emit("setRoute", data);
@@ -33,5 +35,3 @@ export default {
   }
 };
 </script>
-
-<style scoped></style>

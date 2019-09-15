@@ -1,21 +1,13 @@
 <template>
   <section>
-    <template v-if="!noDepartures">
-      <h2>
-        Departure in
-        <span class="color-green">{{ livePayload.until }}</span> min
-      </h2>
-      <h2>
-        At <span class="color-green">{{ livePayload.schedule[0][0] }}</span>
-      </h2>
-      <h2>
-        Arriving at
-        <span class="color-red">{{ livePayload.schedule[0][1] }}</span>
-      </h2>
+    <template v-if="!noDeparturesError">
+      <h2>Departure in<span class="text-green">{{ liveStationData.until }}</span> min</h2>
+      <h2>At <span class="text-green">{{ liveStationData.schedule[0][0] }}</span></h2>
+      <h2>Arriving at<span class="text-red">{{ liveStationData.schedule[0][1] }}</span></h2>
     </template>
 
-    <template v-if="noDepartures">
-      <h2 class="color-red">No departures !</h2>
+    <template v-if="noDeparturesError">
+      <h2 class="text-red">No departures !</h2>
       <p>Tohru couldn't find any close departures for today!</p>
       <p>You could always try to change selected route.</p>
     </template>
@@ -31,14 +23,14 @@ export default {
 
   data() {
     return {
-      noDepartures: false,
+      noDeparturesError: false,
       intervalTimer: Object,
-      livePayload: { until: "00", schedule: [["00:00", "00:00"]] }
+      liveStationData: { until: "00", schedule: [["00:00", "00:00"]] }
     };
   },
 
   methods: {
-    getLiveData: function() {
+    getStationLiveData: function() {
       this.$http
         .get(
           "https://tohru.sylvanas.dream/live/?origin=" +
@@ -48,32 +40,29 @@ export default {
         )
         .then(response => {
           if (response.data.status == "success") {
-            this.livePayload = response.data.payload;
-            this.noDepartures = false;
+            this.liveStationData = response.data.payload;
+            this.noDeparturesError = false;
           } else {
-            this.livePayload = {};
-            this.noDepartures = true;
+            this.liveStationData = { until: "00", schedule: [["00:00", "00:00"]] };
+            this.noDeparturesError = true;
           }
         })
-        .catch(error => {
-          console.log(error);
-        });
     }
   },
   watch: {
-    "route.origin": function() {
-      this.getLiveData();
-    },
-    "route.destination": function() {
-      this.getLiveData();
+    route: {
+      deep: true,
+      handler: function(route) {
+        this.getStationLiveData();
+      }
     }
   },
   created() {
-    this.getLiveData();
+    this.getStationLiveData();
 
     var self = this;
     this.intervalTimer = setInterval(function() {
-      self.getLiveData();
+      self.getStationLiveData();
     }, 3600);
   }
 };
@@ -88,11 +77,11 @@ section {
   padding-top: 10vh;
 }
 
-.color-green {
+.text-green {
   color: #22a460;
 }
 
-.color-red {
+.text-red {
   color: #fc736a;
 }
 </style>

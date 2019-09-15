@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <SelectPage
-      v-show="showSelectPage" class="page-overlay"
+      v-show="showSelectPage"
+      class="page-overlay"
       v-bind:route="route"
       v-on:toggleSelectPage="toggleSelectPage"
       v-on:setRoute="setRoute"
@@ -12,7 +13,6 @@
       v-show="!showSelectPage"
       v-bind:class="{ 'slider-snap-active': snapSliderScroll }"
     >
-
       <AboutPage
         id="about-page"
         class="page"
@@ -108,7 +108,7 @@ export default {
     visibilityChange: function(isVisible, object) {
       if (isVisible === true) {
         this.activePage = object.target.id;
-      };
+      }
     },
 
     // Sets new global selected route
@@ -118,9 +118,9 @@ export default {
       // Saves selected destinations for Smart-Route
       this.lastUsedDestinations.push(route.destination);
 
-      if ( this.lastUsedDestinations.length > 6) {
+      if (this.lastUsedDestinations.length > 6) {
         this.lastUsedDestinations.shift();
-      };
+      }
     },
 
     // Smart-Route system
@@ -147,16 +147,20 @@ export default {
             if (response.data.status == "success") {
               var reversedDestinations = self.lastUsedDestinations.reverse();
               var nearestOrigin = Object.keys(response.data.payload)[0];
-              var originConnections = response.data.payload[nearestOrigin].connections;
+              var originConnections =
+                response.data.payload[nearestOrigin].connections;
 
               for (var i = 0; i < reversedDestinations.length; ++i) {
                 if (originConnections.includes(reversedDestinations[i])) {
-                  self.setRoute({origin: nearestOrigin, destination: reversedDestinations[i]})
+                  self.setRoute({
+                    origin: nearestOrigin,
+                    destination: reversedDestinations[i]
+                  });
                   return null;
                 }
               }
             }
-          })
+          });
       }
     }
   },
@@ -174,15 +178,15 @@ export default {
     // Loads saved settings from Local Storage
     if (localStorage.route) {
       this.route = JSON.parse(localStorage.route);
-    };
+    }
 
     if (localStorage.useSmartRoute) {
       this.useSmartRoute = JSON.parse(localStorage.useSmartRoute);
-    };
+    }
 
     if (localStorage.lastUsedDestinations) {
       this.lastUsedDestinations = JSON.parse(localStorage.lastUsedDestinations);
-    };
+    }
 
     this.selectSmartRoute();
   },
@@ -203,7 +207,7 @@ export default {
 
     lastUsedDestinations(array) {
       localStorage.lastUsedDestinations = JSON.stringify(array);
-    },
+    }
   }
 };
 </script>
@@ -344,5 +348,4 @@ section {
     margin: 0 auto;
   }
 }
-
 </style>

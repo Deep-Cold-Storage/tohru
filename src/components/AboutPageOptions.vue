@@ -1,17 +1,25 @@
 <template>
   <section>
     <p><img class="icon" src="../assets/cogs-icon.svg" />Options</p>
-    <p>Use Smart-Route :
+    <p>
+      Use Smart-Route :
       <button
         class="toggle-button"
         v-bind:class="{ 'toggle-button-green': useSmartRoute }"
         v-on:click="setSmartRoute(true)"
-      >YES</button>
+      >
+        YES
+      </button>
       <button
         class="toggle-button"
         v-bind:class="{ 'toggle-button-red': !useSmartRoute }"
         v-on:click="setSmartRoute(false)"
-      >NO</button>
+      >
+        NO
+      </button>
+    </p>
+    <p class="text-gray">
+      Predicts route based of usage history and location data.
     </p>
   </section>
 </template>
@@ -35,14 +43,14 @@ button {
   font-family: "Montserrat", sans-serif;
   font-size: 1.5rem;
   font-weight: 700;
-  height: 4.0rem;
+  height: 4rem;
 
   background-color: Transparent;
 
   border-radius: 0.8rem;
 
-  padding-left: 1.0rem;
-  padding-right: 1.0rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
   margin-left: 0.5rem;
   margin-right: 0.5rem;
 
@@ -52,7 +60,7 @@ button {
 }
 
 .icon {
-  width: 2.0rem;
+  width: 2rem;
   height: auto;
   vertical-align: middle;
   margin-right: 10px;
@@ -72,5 +80,9 @@ button {
 .toggle-button-green {
   border: 2px solid #22a460;
   color: #22a460;
+}
+
+.text-gray {
+  color: #353535;
 }
 </style>

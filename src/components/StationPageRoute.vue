@@ -1,15 +1,9 @@
 <template>
   <section>
-    <p>
-      <img class="location-icon" src="../assets/origin-marker.svg" />From
-      {{ originName }}
-    </p>
-    <p>
-      <img class="location-icon" src="../assets/destination-marker.svg" />To
-      {{ destinationName }}
-    </p>
+    <p><img class="location-icon" src="../assets/origin-marker.svg" />From {{ originName }}</p>
+    <p><img class="location-icon" src="../assets/destination-marker.svg" />To {{ destinationName }}</p>
     <button v-on:click="toggleSelectPage">CHANGE</button>
-    <button v-on:click="flipRoute()">
+    <button v-on:click="flipRoute">
       <img class="flip-icon" src="../assets/exchange-arrows.svg" />
     </button>
   </section>
@@ -28,19 +22,14 @@ export default {
     };
   },
   methods: {
-    getOrignName: function() {
+    getOriginName: function() {
       this.$http
         .get("https://tohru.sylvanas.dream/origins/" + this.route.origin)
         .then(response => {
           if (response.data.status == "success") {
             this.originName = response.data.payload[this.route.origin].name;
-          } else {
-            this.originName = "Hello";
           }
         })
-        .catch(error => {
-          console.log(error);
-        });
     },
 
     getDestinationName: function() {
@@ -63,6 +52,7 @@ export default {
       var temp = this.originName;
       this.originName = this.destinationName;
       this.destinationName = temp;
+
       this.$emit("setRoute", {
         origin: this.route.destination,
         destination: this.route.origin
@@ -74,12 +64,12 @@ export default {
     }
   },
   created() {
-    this.getOrignName();
+    this.getOriginName();
     this.getDestinationName();
   },
   watch: {
     "route.origin": function() {
-      this.getOrignName();
+      this.getOriginName();
     },
     "route.destination": function() {
       this.getDestinationName();
@@ -90,7 +80,7 @@ export default {
 
 <style scoped>
 .location-icon {
-  width: 14px;
+  width: 1.4rem;
   height: auto;
   vertical-align: middle;
   margin-right: 8px;
@@ -108,10 +98,10 @@ export default {
 button {
   font-family: "Montserrat", sans-serif;
   color: #353535;
-  height: 4.0rem;
-  padding-left: 1.0rem;
-  padding-right: 1.0rem;
-  margin-right: 1.0rem;
+  height: 4rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-right: 1rem;
   border-radius: 8px;
   font-weight: 700;
   font-size: 1.5rem;
