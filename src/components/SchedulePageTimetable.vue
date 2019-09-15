@@ -1,14 +1,30 @@
 <template>
   <section>
-    <p><img class="clock-icon" src="../assets/clock-icon.svg"/>Day {{daySchedule.date}}</p>
+    <p>
+      <img class="clock-icon" src="../assets/clock-icon.svg" />Day
+      {{ daySchedule.date }}
+    </p>
     <div class="timetable">
       <transition-group name="list">
-        <div :key="key" class="timetable-item" v-for="(item, key) in daySchedule.schedule" v-bind:key="item.offset">
-          <div><h1 class="green">{{item[0]}}</h1></div> <div><h1>---</h1> </div> <div><h1 class="red">{{item[1]}}</h1></div>
+        <div
+          :key="key"
+          class="timetable-item"
+          v-for="(item, key) in daySchedule.schedule"
+          v-bind:key="item.offset"
+        >
+          <div>
+            <h1 class="green">{{ item[0] }}</h1>
+          </div>
+          <div><h1>---</h1></div>
+          <div>
+            <h1 class="red">{{ item[1] }}</h1>
+          </div>
         </div>
       </transition-group>
     </div>
-    <button class="navigation-button"  v-on:click="previousDay()">PREVIOUS</button>
+    <button class="navigation-button" v-on:click="previousDay()">
+      PREVIOUS
+    </button>
     <button class="navigation-button" v-on:click="nextDay()">NEXT</button>
   </section>
 </template>
@@ -17,19 +33,25 @@
 export default {
   name: "SchedulePageTimetable",
   props: {
-    route: Object,
+    route: Object
   },
   data() {
     return {
-      dayOffset : 0,
-      daySchedule: {},
-    }
+      dayOffset: 0,
+      daySchedule: {}
+    };
   },
   methods: {
     getScheduleData: function() {
       this.$http
         .get(
-          "https://tohru.sylvanas.dream/schedules/?origin=" +this.route.origin +"&destination=" + this.route.destination + "&offset=" + this.dayOffset)
+          "https://tohru.sylvanas.dream/schedules/?origin=" +
+            this.route.origin +
+            "&destination=" +
+            this.route.destination +
+            "&offset=" +
+            this.dayOffset
+        )
         .then(response => {
           if (response.data.status == "success") {
             this.daySchedule = response.data.payload;
@@ -43,28 +65,28 @@ export default {
     },
     previousDay: function() {
       if (this.dayOffset > 0) {
-          this.daySchedule = {};
-          this.dayOffset =   this.dayOffset - 1;
-      };
+        this.daySchedule = {};
+        this.dayOffset = this.dayOffset - 1;
+      }
     },
     nextDay: function() {
       if (this.dayOffset < 30) {
-          this.daySchedule = {};
-          this.dayOffset =   this.dayOffset + 1;
-      };
-    },
+        this.daySchedule = {};
+        this.dayOffset = this.dayOffset + 1;
+      }
+    }
   },
-    watch: {
-      "route.origin": function() {
-        this.getScheduleData();
-      },
-      "route.destination": function() {
-        this.getScheduleData();
-      },
-      "dayOffset": function() {
-        console.log("WFT")
-        this.getScheduleData();
-      },
+  watch: {
+    "route.origin": function() {
+      this.getScheduleData();
+    },
+    "route.destination": function() {
+      this.getScheduleData();
+    },
+    dayOffset: function() {
+      console.log("WFT");
+      this.getScheduleData();
+    }
   },
   mounted() {
     this.getScheduleData();
@@ -96,7 +118,7 @@ h1 {
   scroll-snap-align: start;
 }
 
-.timetable-item div{
+.timetable-item div {
   width: 33.3%;
   display: inline-block;
 }
@@ -119,11 +141,11 @@ h1 {
 }
 
 .green {
-  color: #22A460;
+  color: #22a460;
 }
 
 .red {
-  color: #FC736A;
+  color: #fc736a;
 }
 
 .list-enter-active {
@@ -135,7 +157,7 @@ h1 {
 
 @media screen and (min-width: 900px) and (orientation: landscape) {
   .timetable::-webkit-scrollbar {
-      display: none;
+    display: none;
   }
 }
 </style>

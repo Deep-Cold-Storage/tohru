@@ -1,46 +1,74 @@
 <template>
-  <section>
-    <h2>Route selection</h2>
-    <template v-if="!isOriginSelected">
-      <p>
-        <img class="location-icon" src="../assets/origin-marker.svg" />Select
-        <span class="green">Origin</span>
-      </p>
-      <div v-for="(item, key) in allOrigins" v-bind:key="item.name">
+  <div>
+    <section>
+      <h2>Route selection</h2>
+      <template v-if="!isOriginSelected">
+        <p>
+          <img class="location-icon" src="../assets/origin-marker.svg" />Select
+          <span class="green">Origin</span>
+        </p>
+        <div v-for="(item, key) in allOrigins" v-bind:key="item.name">
+          <button
+            class="select-button"
+            v-on:click="selectOrigin(key)"
+            v-bind:class="{ 'selected-green': checkOriginSelection(key) }"
+          >
+            {{ item.name }}
+          </button>
+        </div>
         <button
-          class="select-button"
-          v-on:click="selectOrigin(key)"
-          v-bind:class="{ 'selected-green': checkOriginSelection(key) }"
+          class="action-button"
+          v-if="!hasGPSfailed"
+          v-on:click="getNearestOrigin()"
         >
-          {{ item.name }}
+          <img class="icon" src="../assets/compass-icon.svg" />USE GPS
         </button>
-      </div>
-      <button class="action-button" v-if="!hasGPSfailed" v-on:click="getNearestOrigin()"><img class="icon" src="../assets/compass-icon.svg" />USE GPS</button>
 
-      <button class="navigation-button selected-red" v-on:click="cancelSelection()">CANCEL</button>
-      <button class="navigation-button selected-green witdh-boost" v-on:click="nextSelection()">NEXT</button>
-    </template>
-
-    <template v-if="isOriginSelected">
-      <p>
-        <img
-          class="location-icon"
-          src="../assets/destination-marker.svg"
-        />Select <span class="red">Destination</span>
-      </p>
-      <div v-for="(item, key) in allDestinations" v-bind:key="item.name">
         <button
-          class="select-button"
-          v-on:click="selectDestination(key)"
-          v-bind:class="{ 'selected-red': checkDestinationSelection(key) }"
+          class="navigation-button selected-red"
+          v-on:click="cancelSelection()"
         >
-          {{ item.name }}
+          CANCEL
         </button>
-      </div>
-      <button class="navigation-button selected-red"  v-on:click="cancelSelection()">CANCEL</button>
-      <button class="navigation-button selected-green witdh-boost" v-on:click="acceptSelection()">ACCEPT</button>
-    </template>
-  </section>
+        <button
+          class="navigation-button selected-green witdh-boost"
+          v-on:click="nextSelection()"
+        >
+          NEXT
+        </button>
+      </template>
+
+      <template v-if="isOriginSelected">
+        <p>
+          <img
+            class="location-icon"
+            src="../assets/destination-marker.svg"
+          />Select <span class="red">Destination</span>
+        </p>
+        <div v-for="(item, key) in allDestinations" v-bind:key="item.name">
+          <button
+            class="select-button"
+            v-on:click="selectDestination(key)"
+            v-bind:class="{ 'selected-red': checkDestinationSelection(key) }"
+          >
+            {{ item.name }}
+          </button>
+        </div>
+        <button
+          class="navigation-button selected-red"
+          v-on:click="cancelSelection()"
+        >
+          CANCEL
+        </button>
+        <button
+          class="navigation-button selected-green witdh-boost"
+          v-on:click="acceptSelection()"
+        >
+          ACCEPT
+        </button>
+      </template>
+    </section>
+  </div>
 </template>
 
 <script>
@@ -99,11 +127,11 @@ export default {
         origin: this.selectedOrigin,
         destination: this.selectedDestination
       });
-      this.$emit("toggleSelectionPage");
+      this.$emit("toggleSelectPage");
       this.isOriginSelected = false;
     },
     cancelSelection: function() {
-      this.$emit("toggleSelectionPage");
+      this.$emit("toggleSelectPage");
       this.isOriginSelected = false;
       this.selectedOrigin = this.route.origin;
       this.selectedDestination = this.route.destination;
@@ -112,7 +140,7 @@ export default {
       this.isOriginSelected = true;
     },
     checkGPSsuport: function() {
-      return navigator.geolocation
+      return navigator.geolocation;
     },
     getNearestOrigin: function() {
       navigator.geolocation.getCurrentPosition(success, error);
@@ -120,18 +148,23 @@ export default {
 
       function error() {
         self.hasGPSfailed = true;
-      };
+      }
 
       function success(pos) {
         var crd = pos.coords;
 
         self.$http
-          .get("https://tohru.sylvanas.dream/origins/geo/?lat=" + crd.longitude + "&lng=" + crd.latitude)
+          .get(
+            "https://tohru.sylvanas.dream/origins/geo/?lat=" +
+              crd.longitude +
+              "&lng=" +
+              crd.latitude
+          )
           .then(response => {
             if (response.data.status == "success") {
               self.selectedOrigin = Object.keys(response.data.payload)[0];
             }
-            })
+          })
           .catch(error => {
             console.log(error);
           });

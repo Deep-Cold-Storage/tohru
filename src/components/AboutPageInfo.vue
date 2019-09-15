@@ -1,45 +1,44 @@
 <template>
   <section>
     <h2>Hello,</h2>
-    <h2>My name is <span class="color-green">Tohru</span> !</h2>
+    <h2>My name is<span class="text-green"> Tohru </span>!</h2>
 
     <img class="tohru-logo" src="../assets/tohru-logo.svg"></img>
 
-    <p>Web app created to streamline getting between WSiZ university campuses using private bus.</p>
+    <p>Web app created to help get between WSiZ university campuses using the private bus.</p>
 
-    <button v-if="supportsShare" v-on:click="share()"><img class="icon" src="../assets/heart-icon.svg">SHARE</button>
+    <button v-if="supportShareAPI" v-on:click="shareApp"><img class="icon" src="../assets/heart-icon.svg">SHARE</button>
   </section>
 </template>
 
 <script>
 export default {
   name: "AboutPageInfo",
+
   data() {
     return {
-      supportsShare: true
+      supportShareAPI: true,
+
+      shareTitle: "Tohru - Bus App",
+      shareURL: "https://tohru.sylvanas.dream/",
     }
   },
 
   methods: {
-    share: function() {
-      if (navigator.share) {
-        navigator.share({
-          title: "Tohru Dragon - The Bus App",
-          url: "https://tohru.sylvanas.dream/"
-        }).then(() => {
-          console.log('Thanks for sharing!');
-        })
-        .catch(console.error);
-      } else {
-        console.log("Not supported!")
-      }
-    }
+    shareApp: function() {
+      navigator.share({
+        title: this.shareTitle,
+        url: this.shareURL
+      });
+    },
   },
+
   mounted() {
+    // Hides share button if not supported
     if (navigator.share) {
-      this.supportsShare = true;
-    }
-  }
+      this.supportShareAPI = true;
+    };
+  },
 };
 </script>
 
@@ -68,7 +67,7 @@ h2 {
   margin-left: 4px;
 }
 
-.color-green {
+.text-green {
   color: #22a460;
 }
 
@@ -83,7 +82,7 @@ button {
   color: #22A460;
   background-color: Transparent;
 
-  padding: 8px; 
+  padding: 8px;
 
   border-radius: 8px;
   border: 2px solid #22A460;

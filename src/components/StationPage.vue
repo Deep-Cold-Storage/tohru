@@ -1,7 +1,7 @@
 <template>
   <div>
     <StationPageRoute
-      v-on:toggleSelectionPage="toggleSelectionPage"
+      v-on:toggleSelectPage="toggleSelectPage"
       v-on:setRoute="setRoute"
       v-bind:route="route"
     />
@@ -27,8 +27,8 @@ export default {
       this.$emit("setRoute", data);
     },
 
-    toggleSelectionPage: function() {
-      this.$emit("toggleSelectionPage");
+    toggleSelectPage: function() {
+      this.$emit("toggleSelectPage");
     }
   }
 };

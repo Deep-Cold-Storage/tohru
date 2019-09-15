@@ -2,7 +2,7 @@
   <div class="navigation-bar">
     <div
       class="navigation-bar-button"
-      v-bind:class="{ 'nav-button-active': visiblePage == 'about-page' }"
+      v-bind:class="{ 'nav-button-active': activePage == 'about-page' }"
     >
       <div class="navigation-button-line"></div>
       <button v-on:click="scrollTo('#about-page')">About</button>
@@ -10,7 +10,7 @@
 
     <div
       class="navigation-bar-button"
-      v-bind:class="{ 'nav-button-active': visiblePage == 'station-page' }"
+      v-bind:class="{ 'nav-button-active': activePage == 'station-page' }"
     >
       <div class="navigation-button-line"></div>
       <button v-on:click="scrollTo('#station-page')">Station</button>
@@ -18,7 +18,7 @@
 
     <div
       class="navigation-bar-button"
-      v-bind:class="{ 'nav-button-active': visiblePage == 'schedule-page' }"
+      v-bind:class="{ 'nav-button-active': activePage == 'schedule-page' }"
     >
       <div class="navigation-button-line"></div>
       <button v-on:click="scrollTo('#schedule-page')">Schedule</button>
@@ -30,7 +30,7 @@
 export default {
   name: "NavigationBar",
   props: {
-    visiblePage: String
+    activePage: String
   },
 
   data() {
@@ -47,7 +47,7 @@ export default {
         return;
       }
       this.isScrolling = true;
-      this.$emit("toggleSnap", false);
+      this.$emit("setSnapScroll", false);
 
       this.$scrollTo(target, 400, {
         container: "#slider",
@@ -58,12 +58,12 @@ export default {
 
         onDone: function() {
           self.isScrolling = false;
-          self.$emit("toggleSnap", true);
+          self.$emit("setSnapScroll", true);
         },
 
         onCancel: function() {
           self.isScrolling = false;
-          self.$emit("toggleSnap", true);
+          self.$emit("setSnapScroll", true);
         }
       });
     }

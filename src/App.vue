@@ -1,118 +1,131 @@
 <template>
   <div id="app">
-    <div class="modal-page anti-rotate" >
-      <section>
-        <h2>Rotate screen !</h2>
-      </section>
-    </div>
-
-    <div v-show="isSelectingRoute" class="modal-page">
       <SelectPage
+        v-show="showSelectPage" class="page-overlay"
         v-bind:route="route"
-        v-on:toggleSelectionPage="toggleSelectionPage"
+        v-on:toggleSelectPage="toggleSelectPage"
         v-on:setRoute="setRoute"
       />
-    </div>
 
     <div
       id="slider"
-      v-show="!isSelectingRoute"
-      v-bind:class="{ 'slider-snap-active': snapScroll }"
+      v-show="!showSelectPage"
+      v-bind:class="{ 'slider-snap-active': snapSliderScroll }"
     >
+
       <AboutPage
         id="about-page"
-        v-on:setGPS="setGPS"
-        v-bind:useGPS="useGPS"
+        v-on:setSmartRoute="setSmartRoute"
+        v-bind:useSmartRoute="useSmartRoute"
         v-observe-visibility="{
-          callback: visibilityChanged,
+          callback: visibilityChange,
           throttle: 0,
           intersection: { threshold: 1, rootMargin: '20%' }
         }"
       />
+
       <StationPage
         id="station-page"
-        v-on:toggleSelectionPage="toggleSelectionPage"
+        v-on:toggleSelectPage="toggleSelectPage"
         v-on:setRoute="setRoute"
         v-bind:route="route"
         v-observe-visibility="{
-          callback: visibilityChanged,
+          callback: visibilityChange,
           throttle: 0,
           intersection: { threshold: 1, rootMargin: '20%' }
         }"
       />
+
       <SchedulePage
         id="schedule-page"
         v-bind:route="route"
         v-observe-visibility="{
-          callback: visibilityChanged,
+          callback: visibilityChange,
           throttle: 0,
           intersection: { threshold: 1, rootMargin: '20%' }
         }"
       />
     </div>
     <NavigationBar
-      v-show="!isSelectingRoute"
-      v-on:toggleSnap="toggleSnapScroll"
-      v-bind:visiblePage="visiblePage"
+      v-show="!showSelectPage"
+      v-on:setSnapScroll="setSnapScroll"
+      v-bind:activePage="activePage"
     />
   </div>
 </template>
 
 <script>
 import AboutPage from "./components/AboutPage.vue";
+import SelectPage from "./components/SelectPage.vue";
 import StationPage from "./components/StationPage.vue";
 import SchedulePage from "./components/SchedulePage.vue";
 import NavigationBar from "./components/NavigationBar.vue";
-import SelectPage from "./components/SelectPage.vue";
+
 export default {
   name: "app",
   data() {
     return {
-      snapScroll: true,
-      visiblePage: "station-page",
-
-      useGPS: false,
-      isSelectingRoute: false,
-
-      favouriteDestinations: [],
+      // Used by navigation bar
+      activePage: "station-page",
 
       route: {
         origin: "tesc",
         destination: "ctir"
       },
+
+      // UI State
+      showSelectPage: false,
+      snapSliderScroll: true,
+
+      // Used by Smart Route system
+      useSmartRoute: false,
+      lastUsedDestinations: []
     };
   },
 
   components: {
     AboutPage,
+    SelectPage,
     StationPage,
     SchedulePage,
-    SelectPage,
     NavigationBar
   },
 
   methods: {
-    toggleSnapScroll: function(boolean) {
-      this.snapScroll = boolean;
+    // Used to change UI state
+    toggleSelectPage: function() {
+      this.showSelectPage = !this.showSelectPage;
     },
 
-    toggleSelectionPage: function() {
-      this.isSelectingRoute = !this.isSelectingRoute;
+    setSnapScroll: function(bool) {
+      this.snapSliderScroll = bool;
     },
 
-    setRoute: function(new_route) {
-      this.route = new_route;
+    // Used by navigation bar
+    visibilityChange: function(isVisible, object) {
+      if (isVisible === true) {
+        this.activePage = object.target.id;
+      };
     },
 
-    visibilityChanged: function(isVisible, entry) {
-      if (isVisible == true) {
-        this.visiblePage = entry.target.id;
-      }
+    // Sets new global selected route
+    setRoute: function(route) {
+      this.route = route;
+
+      // Saves selected destinations for Smart-Route
+      this.lastUsedDestinations.push(route.destination);
+
+      if ( this.lastUsedDestinations.length > 6) {
+        this.lastUsedDestinations.shift();
+      };
     },
-    setGPS: function(boolean) {
-      this.useGPS = boolean;
+
+    // Smart-Route system
+    setSmartRoute: function(bool) {
+      this.useSmartRoute = bool;
     },
-    smartSelectOrigin: function() {
+
+    selectSmartRoute: function() {
       navigator.geolocation.getCurrentPosition(success);
       var self = this;
 
@@ -120,21 +133,26 @@ export default {
         var crd = pos.coords;
 
         self.$http
-          .get("https://tohru.sylvanas.dream/origins/geo/?lat=" + crd.longitude + "&lng=" + crd.latitude + "&active=true")
+          .get(
+            "https://tohru.sylvanas.dream/origins/geo/?lat=" +
+              crd.longitude +
+              "&lng=" +
+              crd.latitude +
+              "&active=true"
+          )
           .then(response => {
             if (response.data.status == "success") {
-              var reversed = self.favouriteDestinations.reverse()
+              var reversed = self.lastUsedDestinations.reverse();
               var key = Object.keys(response.data.payload)[0];
-              var connections = response.data.payload[key].connections
+              var connections = response.data.payload[key].connections;
 
               for (index = 0; index < reversed.length; ++index) {
                 if (connections.includes(reversed[index])) {
-                  self.route = {"origin": key, "destination": reversed[index]}
+                  self.route = { origin: key, destination: reversed[index] };
                 }
               }
-
             }
-            })
+          })
           .catch(error => {
             console.log(error);
           });
@@ -143,6 +161,7 @@ export default {
   },
 
   mounted() {
+    // Scrolls to Station Page on load
     this.$scrollTo("#station-page", 0, {
       container: "#slider",
       cancelable: false,
@@ -151,42 +170,39 @@ export default {
       x: true
     });
 
-    if (localStorage.origin) {
-      this.route.origin = localStorage.origin;
+    // Loads saved settings from Local Storage
+    if (localStorage.route) {
+      this.route = JSON.parse(localStorage.route);
     };
 
-    if (localStorage.destination) {
-      this.route.destination = localStorage.destination;
+    if (localStorage.useSmartRoute) {
+      this.useSmartRoute = JSON.parse(localStorage.useSmartRoute);
     };
 
-    if (localStorage.useGPS) {
-      this.useGPS = JSON.parse(localStorage.useGPS);
+    if (localStorage.lastUsedDestinations) {
+      this.lastUsedDestinations = JSON.parse(localStorage.lastUsedDestinations);
     };
 
-    if (localStorage.favouriteDestinations) {
-      this.favouriteDestinations = JSON.parse(localStorage.favouriteDestinations);
-    };
-
-    smartSelectOrigin();
+    selectSmartRoute();
   },
-  watch: {
-    "route.origin"(origin) {
-      localStorage.origin = origin;
-    },
-    "route.destination"(destination) {
-      localStorage.destination = destination;
 
-      this.favouriteDestinations.push(destination)
-      if (this.favouriteDestinations.length > 6) {
-        this.favouriteDestinations.shift()
+  watch: {
+    // Saves route between app uses
+    route: {
+      deep: true,
+      handler: function(route) {
+        localStorage.route = JSON.stringify(route);
       }
     },
-    favouriteDestinations (new_array) {
-      localStorage.favouriteDestinations = JSON.stringify(new_array);
+
+    // Smart-Route
+    useSmartRoute(bool) {
+      localStorage.useSmartRoute = bool;
     },
-    useGPS (boolean) {
-      localStorage.useGPS = boolean;
-    }
+
+    lastUsedDestinations(array) {
+      localStorage.lastUsedDestinations = JSON.stringify(array);
+    },
   }
 };
 </script>
@@ -273,28 +289,18 @@ section {
 }
 
 /* Modal */
-.modal-page {
+.page-overlay {
   border: 0;
   height: 100vh;
   width: 100vw;
 }
 
-.anti-rotate {
-  display: none;
-}
 
 @media screen and (min-width: 100px) and (max-width: 340px) {
   html {
     font-size: 9px;
   }
 }
-
-@media screen and (min-width: 100px) and (max-width: 1000px) and (max-height: 550px)  and (orientation: landscape) {
-  html {
-    opacity: 0;
-  }
-}
-
 
 @media screen and (min-width: 700px) and (max-width: 1100px) {
   section {
@@ -314,7 +320,7 @@ section {
   section {
     width: 70%;
   }
-  .modal-page {
+  .page-overlay {
     width: 33.3vw;
     margin: 0 auto;
   }

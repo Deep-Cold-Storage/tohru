@@ -2,17 +2,17 @@
   <section>
     <p><img class="icon" src="../assets/cogs-icon.svg" />Options</p>
     <p>
-      Use GPS :
+      Use Smart-Route :
       <button
-        v-bind:class="{ 'toggle-button-green': useGPS }"
-        v-on:click="setGPS(true)"
+        v-bind:class="{ 'toggle-button-green': useSmartRoute }"
+        v-on:click="setSmartRoute(true)"
         class="toggle-button"
       >
         YES
       </button>
       <button
-        v-bind:class="{ 'toggle-button-red': !useGPS }"
-        v-on:click="setGPS(false)"
+        v-bind:class="{ 'toggle-button-red': !useSmartRoute }"
+        v-on:click="setSmartRoute(false)"
         class="toggle-button"
       >
         NO
@@ -25,11 +25,11 @@
 export default {
   name: "AboutPageOptions",
   props: {
-    useGPS: Boolean
+    useSmartRoute: Boolean
   },
   methods: {
-    setGPS: function(boolean) {
-      this.$emit("setGPS", boolean);
+    setSmartRoute: function(boolean) {
+      this.$emit("setSmartRoute", boolean);
     }
   }
 };
@@ -61,7 +61,7 @@ button {
   padding-right: 10px;
 
   margin-left: 10px;
-  margin-right: 10px;
+  margin-right: 4px;
 
   border-radius: 8px;
   border: 2px solid #22a460;

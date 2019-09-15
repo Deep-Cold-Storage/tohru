@@ -1,7 +1,7 @@
 <template>
   <div>
-    <AboutPageInfo />
-    <AboutPageOptions v-on:setGPS="setGPS" v-bind:useGPS="useGPS" />
+    <AboutPageInfo/>
+    <AboutPageOptions v-on:setSmartRoute="setSmartRoute" v-bind:useSmartRoute="useSmartRoute" />
   </div>
 </template>
 
@@ -15,13 +15,15 @@ export default {
     AboutPageInfo,
     AboutPageOptions
   },
+
   props: {
-    useGPS: Boolean
+    useSmartRoute: Boolean,
   },
+
   methods: {
-    setGPS: function(boolean) {
-      this.$emit("setGPS", boolean);
-    }
+    setSmartRoute: function(boolean) {
+      this.$emit("setSmartRoute", boolean);
+    },
   }
 };
 </script>

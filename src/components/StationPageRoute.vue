@@ -8,7 +8,7 @@
       <img class="location-icon" src="../assets/destination-marker.svg" />To
       {{ destinationName }}
     </p>
-    <button v-on:click="toggleSelectionPage()">CHANGE</button>
+    <button v-on:click="toggleSelectPage">CHANGE</button>
     <button v-on:click="flipRoute()">
       <img class="flip-icon" src="../assets/exchange-arrows.svg" />
     </button>
@@ -69,8 +69,8 @@ export default {
       });
     },
 
-    toggleSelectionPage: function() {
-      this.$emit("toggleSelectionPage");
+    toggleSelectPage: function() {
+      this.$emit("toggleSelectPage");
     }
   },
   created() {

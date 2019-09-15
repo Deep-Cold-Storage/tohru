@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SchedulePageTimetable v-bind:route="route"/>
+    <SchedulePageTimetable v-bind:route="route" />
   </div>
 </template>
 
@@ -10,13 +10,12 @@ import SchedulePageTimetable from "./SchedulePageTimetable.vue";
 export default {
   name: "SchedulePage",
   components: {
-    SchedulePageTimetable,
+    SchedulePageTimetable
   },
   props: {
-    route: Object,
+    route: Object
   }
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
