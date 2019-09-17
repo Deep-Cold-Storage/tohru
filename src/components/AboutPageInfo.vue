@@ -5,7 +5,7 @@
 
     <img class="logo" src="../assets/tohru-logo.svg">
 
-    <p>Web app created to help get between WSiZ university campuses using a private bus.</p>
+    <p>Web app created to help you get between WSiZ university campuses using a private bus.</p>
 
     <button v-if="supportShareAPI" v-on:click="shareApp"><img class="button-icon" src="../assets/heart-icon.svg"/>SHARE</button>
   </section>
@@ -14,13 +14,13 @@
 <script>
 export default {
   name: "AboutPageInfo",
-
   data() {
     return {
       supportShareAPI: false,
 
-      shareTitle: "Tohru - Bus App",
-      shareURL: "https://tohru.sylvanas.dream/",
+      shareTitle: "Tohru Dragon - The Bus App",
+      shareText: "Web app created to help you get between WSiZ university campuses using a private bus.",
+      shareURL: "https://tohru.bednarski.dev/",
     }
   },
 
@@ -29,7 +29,8 @@ export default {
     shareApp: function() {
       navigator.share({
         title: this.shareTitle,
-        url: this.shareURL
+        url: this.shareURL,
+        text: this.shareText
       });
     },
   },

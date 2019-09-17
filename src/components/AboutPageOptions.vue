@@ -19,7 +19,7 @@
       </button>
     </p>
     <p class="text-gray">
-      Predicts route based of usage history and location data.
+      Predicts route based on usage history and location data.
     </p>
   </section>
 </template>

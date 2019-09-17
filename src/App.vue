@@ -49,11 +49,13 @@
         }"
       />
     </div>
+    
     <NavigationBar
       v-show="!showSelectPage"
       v-on:setSnapScroll="setSnapScroll"
       v-bind:activePage="activePage"
     />
+
   </div>
 </template>
 

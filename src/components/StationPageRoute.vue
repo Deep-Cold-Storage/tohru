@@ -65,10 +65,12 @@ export default {
       this.$emit("toggleSelectPage");
     }
   },
+  
   created() {
     this.getOriginName();
     this.getDestinationName();
   },
+
   watch: {
     "route.origin": function() {
       this.getOriginName();

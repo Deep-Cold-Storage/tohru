@@ -7,7 +7,6 @@ steps:
   commands:
   - npm install
   - npm run build
-  - echo "Done!"
 
 - name: deploy (staging)
   privileged: true
@@ -18,7 +17,6 @@ steps:
   commands:
   - rm -r /deploy/*
   - cp -R ./dist/* /deploy/
-  - echo "Done!"
   when:
     event:
       include:
@@ -34,7 +32,6 @@ steps:
   commands:
   - rm -r /deploy/*
   - cp -R ./dist/* /deploy/
-  - echo "Done!"
   when:
     event:
       - promote
