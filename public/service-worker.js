@@ -4,6 +4,21 @@ workbox.setConfig({
 
 workbox.precaching.precacheAndRoute([]);
 
+// CSS
+workbox.routing.registerRoute(
+    new RegExp('\.css$'),
+    workbox.strategies.cacheFirst({
+        cacheName: 'style',
+        plugins: [
+            new workbox.expiration.Plugin({
+                maxAgeSeconds: 60 * 60 * 24 * 7, // cache for one week
+                maxEntries: 20, // only cache 20 request
+                purgeOnQuotaError: true
+            })
+        ]
+    })
+);
+
 workbox.routing.registerRoute(
   /\.(?:png|gif|jpg|jpeg|svg)$/,
   workbox.strategies.staleWhileRevalidate({
@@ -18,10 +33,13 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
-  new RegExp('/v1/origins/'),
-  workbox.strategies.networkFirst({
-    cacheName: 'api',
-  }),
+    new RegExp('/v1/origins/'),
+    workbox.strategies.staleWhileRevalidate({
+        cacheName: 'My-awesome-cache-news-headline',
+        cacheExpiration: {
+            maxAgeSeconds: 60 * 30 //cache the news content for 30mn
+        }
+    })
 );
 
 workbox.routing.registerRoute(

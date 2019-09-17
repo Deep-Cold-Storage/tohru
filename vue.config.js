@@ -10,6 +10,8 @@ module.exports = {
     pwa: {
         workboxPluginMode: "InjectManifest",
         workboxOptions: {
+            globDirectory: "/",
+            globPatterns: ["**/*.{css,html,js,png}"],
             swSrc: "public/service-worker.js",
         }
     }
