@@ -6,7 +6,7 @@ steps:
   image: node:latest
   commands:
   - npm install
-  - nmp run build
+  - npm run build
   - echo "Done!"
 
 - name: deploy (staging)
