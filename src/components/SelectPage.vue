@@ -227,7 +227,7 @@ export default {
 }
 
 .select-button {
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 
   font-family: "Montserrat", sans-serif;
   color: #f8f8f8;

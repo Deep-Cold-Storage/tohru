@@ -22,6 +22,7 @@ export default {
     };
   },
   methods: {
+    // Gets name of origin from code
     getOriginName: function() {
       this.$http
         .get("https://tohru.sylvanas.dream/origins/" + this.route.origin)
@@ -32,6 +33,7 @@ export default {
         })
     },
 
+    // Gets name of destination from code
     getDestinationName: function() {
       this.$http
         .get("https://tohru.sylvanas.dream/origins/" + this.route.destination)
@@ -43,12 +45,12 @@ export default {
             this.destinationName = "Hello";
           }
         })
-        .catch(error => {
-          console.log(error);
-        });
     },
 
+    // Flips origin, destination globally
     flipRoute: function() {
+      
+      // Temp swicht for faster feedback
       var temp = this.originName;
       this.originName = this.destinationName;
       this.destinationName = temp;

@@ -1,9 +1,9 @@
 <template>
   <section>
     <template v-if="!noDeparturesError">
-      <h2>Departure in<span class="text-green">{{ liveStationData.until }}</span> min</h2>
+      <h2>Departure in <span class="text-green">{{ liveStationData.until }}</span> min</h2>
       <h2>At <span class="text-green">{{ liveStationData.schedule[0][0] }}</span></h2>
-      <h2>Arriving at<span class="text-red">{{ liveStationData.schedule[0][1] }}</span></h2>
+      <h2>Arriving at <span class="text-red">{{ liveStationData.schedule[0][1] }}</span></h2>
     </template>
 
     <template v-if="noDeparturesError">
@@ -30,6 +30,7 @@ export default {
   },
 
   methods: {
+    // Gets info about nearest departure from selected origin
     getStationLiveData: function() {
       this.$http
         .get(

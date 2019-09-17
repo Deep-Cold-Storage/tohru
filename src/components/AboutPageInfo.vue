@@ -17,7 +17,7 @@ export default {
 
   data() {
     return {
-      supportShareAPI: true,
+      supportShareAPI: false,
 
       shareTitle: "Tohru - Bus App",
       shareURL: "https://tohru.sylvanas.dream/",
@@ -25,6 +25,7 @@ export default {
   },
 
   methods: {
+    // Shares link using Share API
     shareApp: function() {
       navigator.share({
         title: this.shareTitle,

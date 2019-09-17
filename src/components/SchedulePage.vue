@@ -12,10 +12,9 @@ export default {
   components: {
     SchedulePageTimetable
   },
+
   props: {
     route: Object
   }
 };
 </script>
-
-<style scoped></style>

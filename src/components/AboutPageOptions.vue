@@ -30,7 +30,9 @@ export default {
   props: {
     useSmartRoute: Boolean
   },
+
   methods: {
+    // Sets global Smart-Route setting
     setSmartRoute: function(boolean) {
       this.$emit("setSmartRoute", boolean);
     }
@@ -40,6 +42,7 @@ export default {
 
 <style scoped>
 button {
+
   font-family: "Montserrat", sans-serif;
   font-size: 1.5rem;
   font-weight: 700;
@@ -68,6 +71,7 @@ button {
 }
 
 .toggle-button {
+  transition: all 0.2s ease;
   border: 2px solid #353535;
   color: #353535;
 }

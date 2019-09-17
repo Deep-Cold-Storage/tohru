@@ -147,8 +147,7 @@ export default {
             if (response.data.status == "success") {
               var reversedDestinations = self.lastUsedDestinations.reverse();
               var nearestOrigin = Object.keys(response.data.payload)[0];
-              var originConnections =
-                response.data.payload[nearestOrigin].connections;
+              var originConnections = response.data.payload[nearestOrigin].connections;
 
               for (var i = 0; i < reversedDestinations.length; ++i) {
                 if (originConnections.includes(reversedDestinations[i])) {

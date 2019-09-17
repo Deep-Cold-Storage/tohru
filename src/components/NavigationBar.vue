@@ -40,13 +40,18 @@ export default {
   },
 
   methods: {
+    // Scrolls to target ID
     scrollTo: function(target) {
       var self = this;
 
+      // One scroll at the time
       if (this.isScrolling == true) {
         return;
       }
+
       this.isScrolling = true;
+
+      // Disables snap scrolling on #slider for smooth scroll
       this.$emit("setSnapScroll", false);
 
       this.$scrollTo(target, 400, {
