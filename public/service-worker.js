@@ -20,6 +20,19 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
+  /\.(*),
+  workbox.strategies.staleWhileRevalidate({
+    cacheName: 'all',
+    plugins: [
+      new workbox.expiration.Plugin({
+        maxEntries: 60,
+        maxAgeSeconds: 60 * 30, // 30 Days
+      }),
+    ],
+  }),
+);
+
+workbox.routing.registerRoute(
   /\.(?:png|gif|jpg|jpeg|svg)$/,
   workbox.strategies.staleWhileRevalidate({
     cacheName: 'images',
