@@ -1,0 +1,49 @@
+kind: pipeline
+name: default
+
+steps:
+- name: build
+  image: node:latest
+  commands:
+  - npm install
+  - nmp run build
+  - echo "Done!"
+
+- name: deploy (staging)
+  privileged: true
+  image: alpine
+  volumes:
+  - name: www/staging
+    path: /deploy
+  commands:
+  - rm -r /deploy/*
+  - cp -R ./dist/* /deploy/
+  - echo "Done!"
+  when:
+    event:
+      include:
+        - push
+      exclude:
+        - promote
+
+- name: deploy (production)
+  image: alpine
+  volumes:
+  - name: www/production
+    path: /deploy
+  commands:
+  - rm -r /deploy/*
+  - cp -R ./dist/* /deploy/
+  - echo "Done!"
+  when:
+    event:
+      - promote
+
+volumes:
+- name: www/staging
+  host:
+    path: /var/www/tohru.sylvanas.dream/
+
+- name: www/production
+  host:
+    path: /var/www/tohru.bednarski.dev/
