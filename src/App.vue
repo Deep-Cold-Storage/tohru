@@ -137,7 +137,7 @@ export default {
 
         self.$http
           .get(
-            "https://tohru.sylvanas.dream/origins/geo/?lat=" +
+            "/v1/origins/geo/?lat=" +
               crd.longitude +
               "&lng=" +
               crd.latitude +

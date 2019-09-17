@@ -40,7 +40,7 @@ export default {
     getScheduleData: function() {
       this.$http
         .get(
-          "https://tohru.sylvanas.dream/schedules/?origin=" +
+          "/v1/schedules/?origin=" +
             this.route.origin +
             "&destination=" +
             this.route.destination +

@@ -34,7 +34,7 @@ export default {
     getStationLiveData: function() {
       this.$http
         .get(
-          "https://tohru.sylvanas.dream/live/?origin=" +
+          "/v1/live/?origin=" +
             this.route.origin +
             "&destination=" +
             this.route.destination

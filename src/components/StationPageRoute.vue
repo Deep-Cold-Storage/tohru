@@ -25,7 +25,7 @@ export default {
     // Gets name of origin from code
     getOriginName: function() {
       this.$http
-        .get("https://tohru.sylvanas.dream/origins/" + this.route.origin)
+        .get("/v1/origins/" + this.route.origin)
         .then(response => {
           if (response.data.status == "success") {
             this.originName = response.data.payload[this.route.origin].name;
@@ -36,7 +36,7 @@ export default {
     // Gets name of destination from code
     getDestinationName: function() {
       this.$http
-        .get("https://tohru.sylvanas.dream/origins/" + this.route.destination)
+        .get("/v1/origins/" + this.route.destination)
         .then(response => {
           if (response.data.status == "success") {
             this.destinationName =
@@ -49,7 +49,7 @@ export default {
 
     // Flips origin, destination globally
     flipRoute: function() {
-      
+
       // Temp swicht for faster feedback
       var temp = this.originName;
       this.originName = this.destinationName;

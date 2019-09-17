@@ -92,7 +92,7 @@ export default {
   methods: {
     getAllOrigins: function() {
       this.$http
-        .get("https://tohru.sylvanas.dream/origins/")
+        .get("/v1/origins/")
         .then(response => {
           if (response.data.status == "success") {
             this.allOrigins = response.data.payload;
@@ -155,7 +155,7 @@ export default {
 
         self.$http
           .get(
-            "https://tohru.sylvanas.dream/origins/geo/?lat=" +
+            "/v1/origins/geo/?lat=" +
               crd.longitude +
               "&lng=" +
               crd.latitude
