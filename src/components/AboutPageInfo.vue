@@ -5,7 +5,7 @@
 
     <img class="logo" src="../assets/tohru-logo.svg">
 
-    <p>Web app created to help get between WSiZ university campuses using the private bus.</p>
+    <p>Web app created to help get between WSiZ university campuses using a private bus.</p>
 
     <button v-if="supportShareAPI" v-on:click="shareApp"><img class="button-icon" src="../assets/heart-icon.svg"/>SHARE</button>
   </section>
