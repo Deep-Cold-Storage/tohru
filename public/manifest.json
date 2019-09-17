@@ -1,0 +1,21 @@
+{
+  "name": "Tohru Dragon",
+  "short_name": "Tohru",
+  "description": "Web app created to help you get between WSiZ university campuses using a private bus.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#131313",
+  "icons": [
+    {
+      "src": "../src/assets/tohru-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "../src/assets/tohru-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
