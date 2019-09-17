@@ -6,5 +6,11 @@ module.exports = {
                 secure: false
             }
         }
+    },
+    pwa: {
+        workboxPluginMode: 'InjectManifest',
+        workboxOptions: {
+            swSrc: 'public/service-worker.js',
+        }
     }
 };
