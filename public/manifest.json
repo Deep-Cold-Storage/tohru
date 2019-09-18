@@ -7,11 +7,10 @@
   "orientation": "portrait",
   "theme_color": "#131313",
   "background_color": "#131313",
-  "icons": [
+  "icons":
     {
       "src": "img/tohru-icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
-    },
-  ]
+    }
 }
