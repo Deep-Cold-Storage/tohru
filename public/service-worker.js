@@ -28,7 +28,7 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
-  /\.(*),
+  /\.(*)/,
   workbox.strategies.staleWhileRevalidate({
     cacheName: 'all',
     plugins: [
