@@ -1,8 +1,16 @@
-workbox.setConfig({
-  debug: false,
-});
 
+workbox.setConfig({ debug: true });
 workbox.precaching.precacheAndRoute([]);
+
+
+workbox.routing.registerRoute(/(\/$|\/\?.*$)/, workbox.strategies.networkFirst({
+  cacheName: 'pages-cache',
+  plugins: [
+    new workbox.expiration.Plugin({
+      maxAgeSeconds: 1 * 24 * 60 * 60 // 1 Days
+    })
+  ]
+}));
 
 // CSS
 workbox.routing.registerRoute(
