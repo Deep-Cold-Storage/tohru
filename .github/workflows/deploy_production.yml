@@ -25,11 +25,13 @@ jobs:
       env:
         CI: true
 
+    - name: Install Rsync
+      run: |
+        apt update
+        apt install rsync
+
     - name: RSync To Sylvanas
       run: |
-        apk update
-        apk add rsync
-        
         echo ${{ secrets.SSH_KEY }} > key
         rsync -Pav --delete -e "ssh -i key" dist/* ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOSTNAME }}:/var/www/tohru.bednarski.dev/
 
