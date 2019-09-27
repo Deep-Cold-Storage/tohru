@@ -29,14 +29,13 @@ jobs:
       run: |
         sudo apt update
         sudo apt install rsync
-        
-    - name: Test Rsync
-      run: |
-        sudo rsync --help
-        rsync --help
-
+    
+    - name: Prepare SSH Agent
+      uses: webfactory/ssh-agent@v0.1.1
+      with:
+        ssh-private-key: ${{ secrets.SSH_KEY }}
+                  
     - name: RSync To Sylvanas
       run: |
-        bash echo ${{ secrets.SSH_KEY }} > ./key
-        rsync -Pav -e "ssh -i ./key" dist/* ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOSTNAME }}:/var/www/tohru.bednarski.dev/
+        rsync -Pav dist/* ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOSTNAME }}:/var/www/tohru.bednarski.dev/
 
