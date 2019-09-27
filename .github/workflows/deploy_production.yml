@@ -1,0 +1,35 @@
+name: Build / Deploy - Production
+
+on:
+  push:
+    branches:
+    - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+        
+    - name: Build App
+      run: |
+        npm install
+        npm run build
+      env:
+        CI: true
+
+    - name: SCP Files
+      uses: appleboy/scp-action@v0.0.1
+      env:
+        HOST: ${{ secrets.SSH_HOSTNAME }}
+        USERNAME: ${{ secrets.SSH_USERNAME }}
+        KEY: ${{ secrets.SSH_KEY }}
+        SOURCE: /dist/*
+        TARGET: /var/www/tohru.bednarski.dev/
