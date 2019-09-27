@@ -15,6 +15,7 @@ jobs:
     - name: Publish Docker Container
       uses: elgohr/Publish-Docker-Github-Action@1.14
       with:
-        name: rangerdigital/tohru-crawler:staging
+        name: rangerdigital/tohru-crawler
+        tag: staging
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
