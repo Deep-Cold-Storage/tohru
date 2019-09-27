@@ -27,8 +27,8 @@ jobs:
 
     - name: Install Rsync
       run: |
-        apt update
-        apt install rsync
+        sudo apt update
+        sudo apt install rsync
 
     - name: RSync To Sylvanas
       run: |
