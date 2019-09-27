@@ -1,9 +1,9 @@
-name: Build Staging
+name: Build - Staging
 
 on:
   push:
     branches:
-    - master
+    - staging
 
 jobs:
   build:
@@ -16,6 +16,5 @@ jobs:
       uses: elgohr/Publish-Docker-Github-Action@1.14
       with:
         name: rangerdigital/tohru-crawler
-        tag: staging
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
