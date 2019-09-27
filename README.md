@@ -1,5 +1,5 @@
 # Tohru - Web Crawler
-[![Build Status](https://drone.bednarski.dev/api/badges/RangerDigital/tohru-crawler/status.svg)](https://drone.bednarski.dev/RangerDigital/tohru-crawler)
+[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2FRangerDigital%2Ftohru-crawler%2Fbadge&style=flat)](https://actions-badge.atrox.dev/RangerDigital/tohru-crawler/goto)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 
