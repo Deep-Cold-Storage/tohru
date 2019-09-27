@@ -26,7 +26,6 @@ jobs:
         CI: true
 
     - name: RSync To Sylvanas
-      uses: docker://alpine:latest
       run: |
         apk update
         apk add rsync
