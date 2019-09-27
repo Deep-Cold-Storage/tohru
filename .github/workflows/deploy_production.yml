@@ -29,9 +29,14 @@ jobs:
       run: |
         sudo apt update
         sudo apt install rsync
+        
+    - name: Test Rsync
+      run: |
+        sudo rsync --help
+        rsync --help
 
     - name: RSync To Sylvanas
       run: |
-        echo ${{ secrets.SSH_KEY }} > key
-        rsync -Pav --delete -e "ssh -i key" dist/* ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOSTNAME }}:/var/www/tohru.bednarski.dev/
+        bash echo ${{ secrets.SSH_KEY }} > ./key
+        rsync -Pav -e "ssh -i ./key" dist/* ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOSTNAME }}:/var/www/tohru.bednarski.dev/
 
