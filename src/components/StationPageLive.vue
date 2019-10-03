@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section v-show="is_ready">
     <template v-if="!noDeparturesError">
       <h2>Departure in <span class="text-green">{{ liveStationData.until }}</span> min</h2>
       <h2>At <span class="text-green">{{ liveStationData.schedule[0][0] }}</span></h2>
@@ -8,7 +8,7 @@
 
     <template v-if="noDeparturesError">
       <h2 class="text-red">No departures !</h2>
-      <p>Tohru couldn't find any close departures for today!</p>
+      <p>Tohru could not find any departures for today!</p>
       <p>You could always try to change selected route.</p>
     </template>
   </section>
@@ -25,7 +25,8 @@ export default {
     return {
       noDeparturesError: false,
       intervalTimer: Object,
-      liveStationData: { until: "00", schedule: [["00:00", "00:00"]] }
+      liveStationData: { until: "00", schedule: [["00:00", "00:00"]] },
+      is_ready: false
     };
   },
 
@@ -43,9 +44,11 @@ export default {
           if (response.data.status == "success") {
             this.liveStationData = response.data.payload;
             this.noDeparturesError = false;
+            this.is_ready = true;
           } else {
             this.liveStationData = { until: "00", schedule: [["00:00", "00:00"]] };
             this.noDeparturesError = true;
+            this.is_ready = true;
           }
         })
     }
@@ -70,6 +73,10 @@ export default {
 </script>
 
 <style scoped>
+* {
+  animation: reveal 0.3s 1;
+}
+
 span {
   font-size: 3rem;
 }
