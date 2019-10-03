@@ -1,16 +1,6 @@
 
-workbox.setConfig({ debug: true });
+workbox.setConfig({ debug: false });
 workbox.precaching.precacheAndRoute([]);
-
-
-workbox.routing.registerRoute(/(\/$|\/\?.*$)/, workbox.strategies.networkFirst({
-  cacheName: 'pages-cache',
-  plugins: [
-    new workbox.expiration.Plugin({
-      maxAgeSeconds: 1 * 24 * 60 * 60 // 1 Days
-    })
-  ]
-}));
 
 // CSS
 workbox.routing.registerRoute(
@@ -19,8 +9,8 @@ workbox.routing.registerRoute(
         cacheName: 'style',
         plugins: [
             new workbox.expiration.Plugin({
-                maxAgeSeconds: 60 * 60 * 24 * 7, // cache for one week
-                maxEntries: 20, // only cache 20 request
+                maxAgeSeconds: 60 * 60 * 24,
+                maxEntries: 20,
                 purgeOnQuotaError: true
             })
         ]
@@ -34,7 +24,7 @@ workbox.routing.registerRoute(
     plugins: [
       new workbox.expiration.Plugin({
         maxEntries: 60,
-        maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+        maxAgeSeconds: 30 * 24,
       }),
     ],
   }),
@@ -43,9 +33,9 @@ workbox.routing.registerRoute(
 workbox.routing.registerRoute(
     new RegExp('/v1/origins/'),
     workbox.strategies.staleWhileRevalidate({
-        cacheName: 'My-awesome-cache-news-headline',
+        cacheName: 'origins',
         cacheExpiration: {
-            maxAgeSeconds: 60 * 30 //cache the news content for 30mn
+            maxAgeSeconds: 60 * 30
         }
     })
 );
@@ -53,7 +43,7 @@ workbox.routing.registerRoute(
 workbox.routing.registerRoute(
   new RegExp('https://fonts.(?:googleapis|gstatic).com/(.*)'),
   workbox.strategies.cacheFirst({
-    cacheName: 'googleapis',
+    cacheName: 'google_fonts',
     plugins: [
       new workbox.expiration.Plugin({
         maxEntries: 30,

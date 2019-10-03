@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section v-show="is_ready">
     <p><img class="location-icon" src="../assets/origin-marker.svg" />From {{ originName }}</p>
     <p><img class="location-icon" src="../assets/destination-marker.svg" />To {{ destinationName }}</p>
     <button v-on:click="toggleSelectPage">CHANGE</button>
@@ -18,7 +18,8 @@ export default {
   data() {
     return {
       originName: "",
-      destinationName: ""
+      destinationName: "",
+      is_ready: false
     };
   },
   methods: {
@@ -39,10 +40,8 @@ export default {
         .get("/v1/origins/" + this.route.destination)
         .then(response => {
           if (response.data.status == "success") {
-            this.destinationName =
-              response.data.payload[this.route.destination].name;
-          } else {
-            this.destinationName = "Hello";
+            this.destinationName = response.data.payload[this.route.destination].name;
+            this.is_ready = true;
           }
         })
     },
@@ -65,7 +64,7 @@ export default {
       this.$emit("toggleSelectPage");
     }
   },
-  
+
   created() {
     this.getOriginName();
     this.getDestinationName();
@@ -83,6 +82,10 @@ export default {
 </script>
 
 <style scoped>
+* {
+  animation: reveal 0.3s 1;
+}
+
 .location-icon {
   width: 1.4rem;
   height: auto;

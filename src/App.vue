@@ -49,7 +49,7 @@
         }"
       />
     </div>
-    
+
     <NavigationBar
       v-show="!showSelectPage"
       v-on:setSnapScroll="setSnapScroll"
@@ -214,7 +214,7 @@ export default {
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Montserrat&display=block");
 
 /* CSS Reset */
 html {
@@ -298,6 +298,16 @@ section {
   border: 0;
   height: 100vh;
   width: 100vw;
+}
+
+/* Animations */
+@keyframes reveal {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 100;
+  }
 }
 
 /* Small Phones (Portrait) */
