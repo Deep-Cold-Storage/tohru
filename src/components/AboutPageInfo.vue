@@ -3,7 +3,7 @@
     <h2>Hello,</h2>
     <h2>My name is<span class="text-green"> Tohru </span>!</h2>
 
-    <img class="logo" src="../assets/tohru-logo.svg">
+    <img class="logo" alt="tohru" src="../assets/tohru-logo.svg">
 
     <p>Web app created to help you get between WSiZ university campuses using a private bus.</p>
 

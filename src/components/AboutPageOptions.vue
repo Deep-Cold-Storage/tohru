@@ -1,6 +1,6 @@
 <template>
   <section>
-    <p><img class="icon" src="../assets/cogs-icon.svg" />Options</p>
+    <p><img class="icon" alt="gears" src="../assets/cogs-icon.svg" />Options</p>
     <p>
       Use Smart-Route :
       <button
