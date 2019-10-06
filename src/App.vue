@@ -131,6 +131,10 @@ export default {
     },
 
     selectSmartRoute: function() {
+      if (this.useSmartRoute == false) {
+        return;
+      }
+
       navigator.geolocation.getCurrentPosition(success);
       var self = this;
 
