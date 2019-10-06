@@ -1,6 +1,6 @@
 <template>
   <section>
-    <p><img class="clock-icon" src="../assets/clock-icon.svg"/>{{selectedDayName}}</p>
+    <p><img class="clock-icon" alt="clock" src="../assets/clock-icon.svg"/>{{selectedDayName}}</p>
     <div class="timetable">
       <transition-group name="timetable-anim">
         <div

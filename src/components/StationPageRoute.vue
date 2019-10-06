@@ -1,10 +1,10 @@
 <template>
   <section v-show="is_ready">
-    <p><img class="location-icon" src="../assets/origin-marker.svg" />From {{ originName }}</p>
-    <p><img class="location-icon" src="../assets/destination-marker.svg" />To {{ destinationName }}</p>
+    <p><img class="location-icon" alt="origin icon" src="../assets/origin-marker.svg" />From {{ originName }}</p>
+    <p><img class="location-icon" alt="destination icon" src="../assets/destination-marker.svg" />To {{ destinationName }}</p>
     <button v-on:click="toggleSelectPage">CHANGE</button>
     <button v-on:click="flipRoute">
-      <img class="flip-icon" src="../assets/exchange-arrows.svg" />
+      <img class="flip-icon" alt="flip arrows" aria-label="Flip route" src="../assets/exchange-arrows.svg" />
     </button>
   </section>
 </template>
