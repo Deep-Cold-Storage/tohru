@@ -337,6 +337,7 @@ section {
   body {
     background-size: 100%;
   }
+
 }
 
 /* Desktop (Landscape) */
@@ -356,6 +357,7 @@ section {
 
   .page {
     min-width: 33.33vw;
+    box-shadow:0px 0px 0px 0.2px #353535 inset;
   }
 
   .page-overlay {
