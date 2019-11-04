@@ -1,5 +1,4 @@
 # Tohru - Parser
-[![Build Status](https://drone.bednarski.dev/api/badges/RangerDigital/tohru-parser/status.svg)](https://drone.bednarski.dev/RangerDigital/tohru-parser)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 
