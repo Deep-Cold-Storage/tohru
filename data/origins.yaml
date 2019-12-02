@@ -8,10 +8,10 @@ origins:
     connections:
       - destination: tycz
         duration: 10
-        column: 10
+        column: 8
       - destination: tesc
         duration: 20
-        column: 10
+        column: 8
 
   - code: tesc
     name: Rzeszów, Tesco
@@ -32,7 +32,7 @@ origins:
     connections:
       - destination: tesc
         duration: 10
-        column: 11
+        column: 9
       - destination: ctir
         duration: 10
         column: 6
