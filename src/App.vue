@@ -78,7 +78,6 @@ export default {
         destination: "ctir"
       },
 
-      // UI State
       showSelectPage: false,
       snapSliderScroll: true,
 
