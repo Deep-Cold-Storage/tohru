@@ -1,0 +1,33 @@
+kind: pipeline
+name: default
+
+steps:
+- name: build (staging)
+  image: plugins/docker
+  settings:
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    repo: rangerdigital/tohru-backend
+    tags: staging
+  when:
+    event:
+      include:
+        - push
+      exclude:
+        - promote
+
+
+- name: build (production)
+  image: plugins/docker
+  settings:
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    repo: rangerdigital/tohru-backend
+    tags: latest
+  when:
+    event:
+      - promote
