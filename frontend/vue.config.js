@@ -2,8 +2,9 @@ module.exports = {
     devServer: {
         proxy: {
             "/v1/*": {
-                target: "https://tohru.sylvanas.dream/",
-                secure: false
+                target: "https://tohru.bednarski.dev/",
+                secure: false,
+                changeOrigin: true
             }
         }
     },
