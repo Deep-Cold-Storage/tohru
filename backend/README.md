@@ -1,6 +1,5 @@
 # Tohru - Backend
 
-[![Build Status](https://drone.bednarski.dev/api/badges/RangerDigital/tohru-backend/status.svg)](https://drone.bednarski.dev/RangerDigital/tohru-backend)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 **Tohru** is a simple **Progressive Web App** created to streamline getting between my university campuses via private bus.
@@ -18,7 +17,7 @@ The whole architecture is made from microservices and batch jobs running in **Do
 **Docker Container** available via DockerHub:
 
 ```
-rangerdigital/tohru-backend:latest
+rangerdigital/tohru:latest
 ```
 
 **Environment Variables:**
