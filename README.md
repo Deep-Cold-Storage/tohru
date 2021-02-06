@@ -11,10 +11,11 @@
 
 <br>
 
-> 🔥 This repository contains an archived version of the Tohru app.  
+> This repository contains an archived version of the Tohru app.  
 > Because of pandemic maintenance, doesn't make sense.
 
-Tohru is a simple Progressive Web App created to help students get between WSiZ university campuses using a private bus. This repository merges four older repositories containing its module.
+**Tohru** is a simple **Progressive Web App** created to help students get between WSiZ university campuses using a private bus.  
+This repository merges four older repositories containing its module.
 
 <br>
 
