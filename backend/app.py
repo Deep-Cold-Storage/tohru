@@ -66,7 +66,7 @@ def retrieve_origins():
 
 
 def retrieve_destinations(origin_id):
-    destinations_ids = [key.split(":")[3] for key in  database.scan_iter("origin:{}:destination:*:duration".format(origin_id))]
+    destinations_ids = [key.split(":")[3] for key in database.scan_iter("origin:{}:destination:*:duration".format(origin_id))]
     return destinations_ids
 
 
